@@ -1,0 +1,15 @@
+.chart {
+  width: 100%;
+}
+
+.chartDefault {
+  height: 220px;
+}
+
+.chartTall {
+  height: 240px;
+}
+
+.chartExtraTall {
+  height: 360px;
+}
