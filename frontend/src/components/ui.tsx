@@ -8,10 +8,11 @@ import styles from "./ui.module.css";
 const cx = (...c: (string | false | undefined)[]) => c.filter(Boolean).join(" ");
 
 /* ---------- Buttons, cards, badges ---------- */
-type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "danger" | "ghost"; loading?: boolean };
+type BtnProps = ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" | "accent" | "danger" | "ghost"; loading?: boolean };
 export function Button({ variant = "primary", loading, className, children, disabled, type = "button", ...rest }: BtnProps) {
   const styles = {
-    primary: "bg-brand-600 text-white hover:bg-brand-700",
+    primary: "bg-brand-600 text-white hover:bg-brand-700 shadow-sm",
+    accent: "bg-accent-500 text-white hover:bg-accent-600 shadow-sm",
     secondary: "border border-slate-300 bg-white text-ink hover:bg-slate-50",
     danger: "bg-red-600 text-white hover:bg-red-700",
     ghost: "text-ink-soft hover:bg-slate-100",
@@ -32,7 +33,9 @@ const TONES: Record<string, string> = {
   verified: "bg-emerald-50 text-emerald-700 ring-emerald-200", completed: "bg-emerald-50 text-emerald-700 ring-emerald-200",
   pending: "bg-amber-50 text-amber-800 ring-amber-200", in_progress: "bg-blue-50 text-blue-700 ring-blue-200",
   rejected: "bg-red-50 text-red-700 ring-red-200", overdue: "bg-red-50 text-red-700 ring-red-200",
-  neutral: "bg-slate-100 text-slate-700 ring-slate-200", brand: "bg-brand-50 text-brand-700 ring-brand-100",
+  neutral: "bg-slate-100 text-slate-700 ring-slate-200", brand: "bg-navy-50 text-navy-900 ring-navy-200",
+  navy: "bg-navy-50 text-navy-900 ring-navy-200", red: "bg-red-50 text-red-700 ring-red-200",
+  accent: "bg-accent-50 text-accent-700 ring-accent-200", orange: "bg-orange-50 text-orange-700 ring-orange-200",
 };
 export const Badge = ({ tone = "neutral", children }: { tone?: string; children: ReactNode }) => (
   <span className={cx("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset", TONES[tone] ?? TONES.neutral)}>{children}</span>

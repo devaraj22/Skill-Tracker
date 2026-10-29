@@ -1,0 +1,200 @@
+.badges-container {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.badges-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.badges-filter-group {
+  display: flex;
+  gap: 0.375rem;
+}
+
+.badges-filter-btn {
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.badges-filter-btn:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.badges-filter-btn.active {
+  background-color: #0284c7;
+  border-color: #0284c7;
+  color: #ffffff;
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .badges-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .badges-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.badge-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.badge-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.badge-card.unlocked {
+  border-color: #e2e8f0;
+}
+
+.badge-card.unlocked.tier-bronze {
+  border-color: var(--badge-bronze-border);
+  background: linear-gradient(180deg, #ffffff 0%, var(--badge-bronze-bg) 100%);
+}
+
+.badge-card.unlocked.tier-silver {
+  border-color: var(--badge-silver-border);
+  background: linear-gradient(180deg, #ffffff 0%, var(--badge-silver-bg) 100%);
+}
+
+.badge-card.unlocked.tier-gold {
+  border-color: var(--badge-gold-border);
+  background: linear-gradient(180deg, #ffffff 0%, var(--badge-gold-bg) 100%);
+}
+
+.badge-card.unlocked.tier-platinum {
+  border-color: var(--badge-platinum-border);
+  background: linear-gradient(180deg, #ffffff 0%, var(--badge-platinum-bg) 100%);
+}
+
+.badge-card.locked {
+  opacity: 0.75;
+  background-color: #fafafa;
+}
+
+.badge-top-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  flex-shrink: 0;
+}
+
+.badge-card.unlocked.tier-bronze .badge-icon-box {
+  background-color: var(--badge-bronze-bg);
+  color: var(--badge-bronze-text);
+  border: 1px solid var(--badge-bronze-border);
+}
+
+.badge-card.unlocked.tier-silver .badge-icon-box {
+  background-color: var(--badge-silver-bg);
+  color: var(--badge-silver-text);
+  border: 1px solid var(--badge-silver-border);
+}
+
+.badge-card.unlocked.tier-gold .badge-icon-box {
+  background-color: var(--badge-gold-bg);
+  color: var(--badge-gold-text);
+  border: 1px solid var(--badge-gold-border);
+}
+
+.badge-card.unlocked.tier-platinum .badge-icon-box {
+  background-color: var(--badge-platinum-bg);
+  color: var(--badge-platinum-text);
+  border: 1px solid var(--badge-platinum-border);
+}
+
+.badge-card.locked .badge-icon-box {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+}
+
+.badge-title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.badge-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.badge-desc {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  line-height: 1.35;
+}
+
+.badge-footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.badge-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.badge-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.badge-unlocked-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #16a34a;
+}

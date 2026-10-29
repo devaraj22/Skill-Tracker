@@ -10,6 +10,10 @@
   height: 240px;
 }
 
+.chartRotated {
+  height: 270px;
+}
+
 .chartExtraTall {
   height: 360px;
 }

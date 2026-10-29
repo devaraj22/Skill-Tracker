@@ -15,6 +15,7 @@ export const registerSchema = z.object({
   email: z.string().trim().email("Enter a valid email address"),
   register_number: z.string().trim().max(40).regex(/^[A-Za-z0-9/_-]*$/, "Use letters, numbers, / _ or - only"),
   department: z.string().trim().max(100),
+  department_id: z.string().optional().nullable(),
   year_of_study: z.string().refine((v) => v === "" || (Number(v) >= 1 && Number(v) <= 6), "Choose a year between 1 and 6"),
   password,
 });
@@ -55,7 +56,9 @@ export const assessmentSchema = z.object({
 
 export const profileSchema = z.object({
   full_name: z.string().trim().min(2, "Enter your full name").max(120), register_number: z.string().trim().max(40).regex(/^[A-Za-z0-9/_-]*$/, "Use letters, numbers, / _ or - only"),
-  department: z.string().trim().max(100), year_of_study: z.string().refine((v) => v === "" || (Number(v) >= 1 && Number(v) <= 6), "Choose a year between 1 and 6"),
+  department: z.string().trim().max(100),
+  department_id: z.string().optional().nullable(),
+  year_of_study: z.string().refine((v) => v === "" || (Number(v) >= 1 && Number(v) <= 6), "Choose a year between 1 and 6"),
   avatar_url: optionalUrl, bio: optionalText(600),
   github_url: optionalUrl.refine((v) => v === "" || /^https?:\/\/(www\.)?github\.com\//i.test(v), "Use a github.com link"),
   linkedin_url: optionalUrl.refine((v) => v === "" || /^https?:\/\/([a-z]+\.)?linkedin\.com\//i.test(v), "Use a linkedin.com link"),

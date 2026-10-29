@@ -9,6 +9,6 @@ export function ProtectedRoute({ role }: { role: Role }) {
   const location = useLocation();
   if (loading) return <div className="p-8" aria-busy="true"><Skeleton className="h-8 w-48" /><span className="sr-only">Loading</span></div>;
   if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  if (user.role !== role) return <Navigate to={user.role === "admin" ? "/admin" : "/"} replace />;
+  if (user.role !== role) return <Navigate to={user.role === "admin" ? "/admin" : "/dashboard"} replace />;
   return <Outlet />;
 }

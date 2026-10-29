@@ -1,4 +1,6 @@
-import type { AchievementKind, CertStatus, GoalStatus, PlacementCategory, Priority, ProjectStatus, SkillCategory, SkillLevel } from "@/types";
+import type { AchievementKind, CertStatus, GoalStatus, PlacementCategory, Priority, ProjectStatus, SchoolGroup, SkillCategory, SkillLevel } from "@/types";
+
+export const SCHOOL_GROUPS: Record<SchoolGroup, string> = { soc: "SOC", non_soc: "Non-SOC" };
 
 export const SKILL_CATEGORIES: Record<SkillCategory, string> = {
   programming: "Programming", dsa: "Data Structures and Algorithms", ai_ml: "AI and Machine Learning", web: "Web Development",

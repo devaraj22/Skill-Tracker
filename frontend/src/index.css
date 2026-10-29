@@ -1,12 +1,31 @@
+@import "./theme/variables.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html { color-scheme: light; }
-  body { @apply bg-slate-50 font-sans text-ink antialiased; }
+  html { 
+    color-scheme: light; 
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  body { 
+    @apply bg-slate-50 font-sans text-ink antialiased; 
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
   :focus-visible { @apply outline-2 outline-offset-2 outline-brand-600; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+@layer utilities {
+  .zoom-level-50 { transform: scale(0.5); transform-origin: center center; }
+  .zoom-level-75 { transform: scale(0.75); transform-origin: center center; }
+  .zoom-level-100 { transform: scale(1); transform-origin: center center; }
+  .zoom-level-125 { transform: scale(1.25); transform-origin: center center; }
+  .zoom-level-150 { transform: scale(1.5); transform-origin: center center; }
+  .zoom-level-200 { transform: scale(2); transform-origin: center center; }
 }

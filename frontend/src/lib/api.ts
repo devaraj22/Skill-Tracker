@@ -63,6 +63,7 @@ function messageFor(status: number, data: { detail?: unknown } | null): string {
 
 export const api = {
   get: <T>(path: string, params?: Params) => request<T>("GET", path, { params }),
+  blob: (path: string) => request<Blob>("GET", path),
   post: <T>(path: string, body?: unknown) => request<T>("POST", path, { body }),
   patch: <T>(path: string, body?: unknown) => request<T>("PATCH", path, { body }),
   del: (path: string) => request<void>("DELETE", path),
