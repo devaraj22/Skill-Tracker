@@ -8,25 +8,23 @@ import { Button, Card, SelectField, TextField } from "@/components/ui";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { loginSchema, nullify, registerSchema } from "@/schemas";
+import { SSMLogo } from "@/components/SSMLogo";
 
 function AuthFrame({ title, subtitle, children, footer }: { title: string; subtitle: string; children: ReactNode; footer: ReactNode }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-50/60 px-4 py-10">
+    <main className="flex min-h-screen items-center justify-center bg-[#FCFBF7] px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center justify-center text-center">
-          <div className="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center font-black tracking-tight text-sm shadow-xs mb-2">
-            SSM
+          <Link to="/" className="hover:opacity-95 transition-opacity inline-block mb-3">
+            <SSMLogo variant="header" showAccreditations={false} />
+          </Link>
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#0B2A63] text-white text-[11px] font-bold tracking-wide uppercase shadow-xs">
+            <span>SkillTrack Platform</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
           </div>
-          <p className="text-xl font-bold text-slate-900 tracking-tight">
-            <span className="text-red-600">SSM</span> <span className="text-navy-900">SkillTrack</span>
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 ml-1 align-middle" />
-          </p>
-          <p className="text-xs text-slate-500 mt-0.5">
-            (An Autonomous Institution) · Palani Highway, Dindigul
-          </p>
         </div>
-        <Card className="p-6 border border-slate-200/90 shadow-sm">
-          <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
+        <Card className="p-6 border border-[#0B2A63]/15 bg-white shadow-md rounded-xl">
+          <h1 className="text-xl font-bold text-[#0B2A63] tracking-tight">{title}</h1>
           <p className="mb-5 mt-1 text-sm text-slate-600">{subtitle}</p>
           {children}
         </Card>
@@ -35,7 +33,7 @@ function AuthFrame({ title, subtitle, children, footer }: { title: string; subti
     </main>
   );
 }
-const home = (role: string) => (role === "admin" ? "/admin" : "/dashboard");
+const home = (role: string) => (role === "admin" ? "/admin" : "/");
 
 export function LoginPage() {
   const { user, login } = useAuth();
@@ -51,12 +49,12 @@ export function LoginPage() {
     catch (e) { setError(e instanceof ApiError ? e.message : "Could not sign in. Please try again."); }
   });
   return (
-    <AuthFrame title="Sign in" subtitle="Use the email and password you registered with." footer={<>New student? <Link to="/register" className="font-medium text-brand-600">Create an account</Link></>}>
+    <AuthFrame title="Sign in" subtitle="Use the email and password you registered with." footer={<>New student? <Link to="/register" className="font-semibold text-[#0B2A63] hover:text-[#D32F2F] hover:underline">Create an account</Link></>}>
       <form onSubmit={submit} noValidate className="space-y-4">
         <TextField label="Email" type="email" autoComplete="email" error={form.formState.errors.email} {...form.register("email")} />
         <TextField label="Password" type="password" autoComplete="current-password" error={form.formState.errors.password} {...form.register("password")} />
-        {error && <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-        <Button type="submit" className="w-full" loading={form.formState.isSubmitting}>Sign in</Button>
+        {error && <p role="alert" className="rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-[#D32F2F]">{error}</p>}
+        <Button type="submit" className="w-full bg-[#0B2A63] hover:bg-[#061838] text-white font-semibold py-2.5 rounded-lg shadow-sm" loading={form.formState.isSubmitting}>Sign in</Button>
       </form>
     </AuthFrame>
   );
@@ -66,7 +64,10 @@ export function RegisterPage() {
   const { user, register: signUp } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
-  const form = useForm<z.infer<typeof registerSchema>>({ resolver: zodResolver(registerSchema), defaultValues: { full_name: "", email: "", register_number: "", department: "", year_of_study: "", password: "" } });
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { full_name: "", email: "", register_number: "", department: "", year_of_study: "", password: "" },
+  });
   if (user) return <Navigate to={home(user.role)} replace />;
   const e = form.formState.errors;
 
@@ -74,16 +75,24 @@ export function RegisterPage() {
     setError(null);
     const body = nullify(v);
     if (body.year_of_study) body.year_of_study = Number(body.year_of_study);
-    try { await signUp(body); navigate("/", { replace: true }); }
-    catch (err) {
+    try {
+      await signUp(body);
+      navigate("/", { replace: true });
+    } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
-        err.fieldErrors.forEach((fe) => { const n = String(fe.loc[fe.loc.length - 1]) as keyof typeof v; if (n in v) form.setError(n, { message: fe.msg }); });
-      } else setError("Could not create the account. Please try again.");
+        err.fieldErrors.forEach((fe) => {
+          const n = String(fe.loc[fe.loc.length - 1]) as keyof typeof v;
+          if (n in v) form.setError(n, { message: fe.msg });
+        });
+      } else {
+        setError("Could not create the account. Please try again.");
+      }
     }
   });
+
   return (
-    <AuthFrame title="Create your student account" subtitle="Administrator accounts are created by your college, not here." footer={<>Already registered? <Link to="/login" className="font-medium text-brand-600">Sign in</Link></>}>
+    <AuthFrame title="Create your student account" subtitle="Track skills, certificates, and placement readiness at SSMIET." footer={<>Already have an account? <Link to="/login" className="font-semibold text-[#0B2A63] hover:text-[#D32F2F] hover:underline">Sign in</Link></>}>
       <form onSubmit={submit} noValidate className="space-y-4">
         <TextField label="Full name" autoComplete="name" error={e.full_name} {...form.register("full_name")} />
         <TextField label="Email" type="email" autoComplete="email" error={e.email} {...form.register("email")} />
@@ -93,8 +102,8 @@ export function RegisterPage() {
         </div>
         <TextField label="Department (optional)" error={e.department} {...form.register("department")} />
         <TextField label="Password" type="password" autoComplete="new-password" hint="10-72 UTF-8 bytes, with a letter and a number." error={e.password} {...form.register("password")} />
-        {error && <p role="alert" className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-        <Button type="submit" className="w-full" loading={form.formState.isSubmitting}>Create account</Button>
+        {error && <p role="alert" className="rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-[#D32F2F]">{error}</p>}
+        <Button type="submit" className="w-full bg-[#0B2A63] hover:bg-[#061838] text-white font-semibold py-2.5 rounded-lg shadow-sm" loading={form.formState.isSubmitting}>Create account</Button>
       </form>
     </AuthFrame>
   );

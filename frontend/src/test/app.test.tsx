@@ -61,7 +61,7 @@ describe("protected routes", () => {
   });
   it("full app: anonymous user opening the dashboard lands on the sign-in form", async () => {
     mockApi(({ path }) => (path === "/auth/me" ? { status: 401, json: { detail: "no" } } : undefined));
-    renderApp(<App />, { route: "/" });
+    renderApp(<App />, { route: "/dashboard" });
     expect(await screen.findByRole("heading", { name: /sign in/i })).toBeInTheDocument();
   });
 });

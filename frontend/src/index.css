@@ -10,13 +10,19 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
   body { 
-    @apply bg-slate-50 font-sans text-ink antialiased; 
+    background-color: var(--color-background, #FCFBF7);
+    color: var(--color-text-body, #1E293B);
+    font-family: var(--font-family-base);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-  :focus-visible { @apply outline-2 outline-offset-2 outline-brand-600; }
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-primary, #0B2A63);
+  }
+  :focus-visible { outline: 2px solid var(--color-primary, #0B2A63); outline-offset: 2px; }
 }
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

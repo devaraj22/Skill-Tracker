@@ -16,17 +16,17 @@ import {
   Menu,
   Search,
   ShieldCheck,
-  TrendingUp,
-  UserCheck,
   UserPlus,
   X,
   AlertCircle,
   Loader2,
+  Building2,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { api } from "@/lib/api";
 import { SSMIET_DEPARTMENTS, type DepartmentInfo } from "./departmentsData";
 import { DepartmentCard } from "./DepartmentCard";
+import { SSMLogo } from "@/components/SSMLogo";
 import type { Department, PublicVerification } from "@/types";
 
 export function LandingPage() {
@@ -49,7 +49,6 @@ export function LandingPage() {
   const {
     data: verificationData,
     isLoading: isVerifying,
-    error: verificationError,
     isFetched: hasVerified,
   } = useQuery<PublicVerification>({
     queryKey: ["verify-cert", lookupQueryId],
@@ -123,79 +122,74 @@ export function LandingPage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-navy-900 selection:text-white">
-      {/* ── TOP NAV BAR ──────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-3 shrink-0">
-            <div className="w-9 h-9 rounded-lg bg-red-600 text-white flex items-center justify-center font-black tracking-tight text-sm shadow-xs">
-              SSM
-            </div>
-            <div className="flex flex-col">
-              <span className="text-base font-bold text-slate-900 leading-tight flex items-center gap-1.5">
-                <span className="text-red-600 font-extrabold">SSM</span> <span className="text-navy-900">SkillTrack</span>
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
-                </span>
-              </span>
-              <span className="text-xs font-medium text-slate-500 hidden sm:block">
-                (An Autonomous Institution) · Dindigul
-              </span>
-            </div>
+    <div className="min-h-screen bg-[#FCFBF7] text-[#1E293B] font-sans selection:bg-[#0B2A63] selection:text-white">
+      {/* ── 1. OFFICIAL INSTITUTIONAL BANNER (EXACT REPLICA OF POSTER) ────────── */}
+      <SSMLogo variant="banner" />
+
+      {/* ── 2. STICKY TOP NAV BAR ────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#0B2A63]/15 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between gap-4">
+          {/* Brand Logo in Navbar */}
+          <Link to="/" className="flex items-center gap-2 shrink-0 hover:opacity-90 transition-opacity">
+            <SSMLogo variant="navbar" />
           </Link>
 
-          {/* Navigation Links - Clean, single-word labels, no redundant options */}
-          <nav className="hidden lg:flex items-center gap-1.5 text-sm font-medium text-slate-600">
+          {/* Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-1.5 text-sm font-semibold text-[#0B2A63]">
+            <a
+              href="#courses"
+              className="px-3 py-1.5 rounded-md hover:text-[#D32F2F] hover:bg-[#F0F4FA] transition-colors whitespace-nowrap"
+            >
+              Academic Programmes
+            </a>
             <a
               href="#departments"
-              className="px-3 py-1.5 rounded-md hover:text-navy-900 hover:bg-slate-50 transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 rounded-md hover:text-[#D32F2F] hover:bg-[#F0F4FA] transition-colors whitespace-nowrap"
             >
               Departments
             </a>
             <a
               href="#features"
-              className="px-3 py-1.5 rounded-md hover:text-navy-900 hover:bg-slate-50 transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 rounded-md hover:text-[#D32F2F] hover:bg-[#F0F4FA] transition-colors whitespace-nowrap"
             >
-              Features
+              Skill Intelligence
             </a>
             <a
               href="#verification"
-              className="px-3 py-1.5 rounded-md hover:text-navy-900 hover:bg-slate-50 transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 rounded-md hover:text-[#D32F2F] hover:bg-[#F0F4FA] transition-colors whitespace-nowrap"
             >
-              Verification
+              Verify Certificate
             </a>
             <a
               href="#about"
-              className="px-3 py-1.5 rounded-md hover:text-navy-900 hover:bg-slate-50 transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 rounded-md hover:text-[#D32F2F] hover:bg-[#F0F4FA] transition-colors whitespace-nowrap"
             >
-              About
+              About Campus
             </a>
           </nav>
 
-          {/* Action Buttons - whitespace-nowrap, single-line, perfectly aligned */}
+          {/* Action Buttons */}
           <div className="hidden sm:flex items-center gap-2.5 shrink-0">
             {user ? (
               <Link
                 to={portalRoute}
-                className="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-950 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-xs transition-all whitespace-nowrap"
+                className="inline-flex items-center gap-2 bg-[#0B2A63] hover:bg-[#061838] text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-xs transition-all whitespace-nowrap border-b-2 border-[#F59E0B]"
               >
-                <LayoutDashboard className="h-4 w-4" />
+                <LayoutDashboard className="h-4 w-4 text-[#FBBF24]" />
                 <span>{portalLabel}</span>
               </Link>
             ) : (
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-slate-700 hover:text-navy-900 hover:bg-slate-50 rounded-lg transition-all border border-slate-300 whitespace-nowrap"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold text-[#0B2A63] hover:text-[#D32F2F] hover:bg-[#F0F4FA] rounded-lg transition-all border border-[#0B2A63]/30 whitespace-nowrap"
                 >
-                  <LogIn className="h-4 w-4 text-slate-500" />
+                  <LogIn className="h-4 w-4 text-[#0B2A63]" />
                   <span>Sign In</span>
                 </Link>
                 <Link
                   to="/register"
-                  className="inline-flex items-center gap-1.5 bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-xs hover:shadow transition-all whitespace-nowrap"
+                  className="inline-flex items-center gap-1.5 bg-[#D32F2F] hover:bg-[#B71C1C] text-white px-4 py-1.5 rounded-lg text-sm font-semibold shadow-xs hover:shadow transition-all whitespace-nowrap border-b-2 border-[#991B1B]"
                 >
                   <UserPlus className="h-4 w-4" />
                   <span>Student Register</span>
@@ -207,7 +201,7 @@ export function LandingPage() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+            className="lg:hidden p-2 rounded-lg text-[#0B2A63] hover:bg-slate-100"
             aria-label="Toggle Navigation Menu"
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -216,32 +210,39 @@ export function LandingPage() {
 
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-2 shadow-md">
+          <div className="lg:hidden border-t border-[#0B2A63]/15 bg-white px-4 py-4 space-y-2 shadow-md">
+            <a
+              href="#courses"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-sm text-[#0B2A63] hover:text-[#D32F2F] font-semibold py-1.5"
+            >
+              Academic Programmes
+            </a>
             <a
               href="#departments"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-sm text-slate-700 hover:text-navy-900 font-medium py-1.5"
+              className="block text-sm text-[#0B2A63] hover:text-[#D32F2F] font-semibold py-1.5"
             >
               Departments
             </a>
             <a
               href="#features"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-sm text-slate-700 hover:text-navy-900 font-medium py-1.5"
+              className="block text-sm text-[#0B2A63] hover:text-[#D32F2F] font-semibold py-1.5"
             >
-              Features
+              Skill Intelligence
             </a>
             <a
               href="#verification"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-sm text-slate-700 hover:text-navy-900 font-medium py-1.5"
+              className="block text-sm text-[#0B2A63] hover:text-[#D32F2F] font-semibold py-1.5"
             >
               Certificate Verification
             </a>
             <a
               href="#about"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-sm text-slate-700 hover:text-navy-900 font-medium py-1.5"
+              className="block text-sm text-[#0B2A63] hover:text-[#D32F2F] font-semibold py-1.5"
             >
               About SSMIET
             </a>
@@ -250,7 +251,7 @@ export function LandingPage() {
                 <Link
                   to={portalRoute}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-2 bg-navy-900 text-white font-semibold rounded-lg text-sm"
+                  className="w-full text-center py-2 bg-[#0B2A63] text-white font-semibold rounded-lg text-sm"
                 >
                   {portalLabel}
                 </Link>
@@ -259,14 +260,14 @@ export function LandingPage() {
                   <Link
                     to="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full text-center py-2 border border-slate-300 text-slate-700 font-semibold rounded-lg text-sm"
+                    className="w-full text-center py-2 border border-[#0B2A63]/30 text-[#0B2A63] font-semibold rounded-lg text-sm"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full text-center py-2 bg-amber-600 text-white font-semibold rounded-lg text-sm"
+                    className="w-full text-center py-2 bg-[#D32F2F] text-white font-semibold rounded-lg text-sm"
                   >
                     Student Register
                   </Link>
@@ -277,29 +278,120 @@ export function LandingPage() {
         )}
       </header>
 
-      {/* ── HERO SECTION ────────────────────────────────────────────────────── */}
-      <section className="bg-gradient-to-b from-blue-50/40 via-white to-slate-50/50 text-slate-900 py-14 sm:py-16 border-b border-slate-200">
+      {/* ── 3. HERO SECTION (FEATURING POSTER COURSES & CAMPUS ARCHITECTURE) ─── */}
+      <section id="courses" className="py-12 sm:py-16 border-b border-[#0B2A63]/15 bg-gradient-to-b from-[#FCFBF7] via-white to-[#F0F4FA]/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-10 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-7 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-navy-900 text-white text-xs font-semibold shadow-xs border-r-4 border-amber-500 hover:shadow-sm transition-all duration-300 animate-fadeInUp">
-                <GraduationCap className="h-4 w-4 text-amber-400" />
-                <span>SSM Institute of Engineering and Technology · (An Autonomous Institution)</span>
+          <div className="grid lg:grid-cols-12 gap-8 items-start">
+            {/* Left Content: Poster Course Matrix */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0B2A63] text-white text-xs font-bold shadow-xs border-r-4 border-[#F59E0B]">
+                <GraduationCap className="h-4 w-4 text-[#FBBF24]" />
+                <span>SSM INSTITUTE OF ENGINEERING AND TECHNOLOGY · (An Autonomous Institution)</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-slate-900 leading-[1.2] animate-fadeInUp">
-                Build Skills. Prove Achievements. <span className="text-navy-900 block mt-1">Get Career Ready.</span>
-              </h1>
+              {/* Headline */}
+              <div>
+                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#0B2A63] leading-[1.18]">
+                  SkillTrack: Institutional Intelligence &amp; Placement Readiness
+                </h1>
+                <p className="mt-2 text-sm sm:text-base text-slate-600 max-w-2xl leading-relaxed">
+                  The official skill management and competency evaluation platform for SSMIET. Track curriculum outcomes, verify real certificates under faculty review, and map student proficiency to premier industry placements.
+                </p>
+              </div>
 
-              <p className="text-sm sm:text-base text-slate-600 max-w-xl leading-relaxed">
-                A verified student intelligence and placement enablement platform for SSMIET. Track core competencies, submit verified certificates for institutional review, and measure readiness for Anna University placements.
-              </p>
+              {/* Exact Poster Courses Grid */}
+              <div className="bg-white border border-[#0B2A63]/20 rounded-2xl p-5 sm:p-6 shadow-md relative overflow-hidden">
+                {/* Poster Gold Ribbon Corner */}
+                <div className="absolute top-0 right-0 w-24 h-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24]" />
 
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {/* UG COURSES COLUMN */}
+                  <div className="space-y-3">
+                    <div className="inline-block bg-[#0B2A63] text-white px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase shadow-xs">
+                      UG COURSES
+                    </div>
+                    <ul className="space-y-1.5 text-xs text-slate-800 font-medium">
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.E.</strong> - Civil Engineering</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.E.</strong> - Mechanical Engineering</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.E.</strong> - Electrical and Electronics Engineering</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.E.</strong> - Electronics and Communication Engineering</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.E.</strong> - Computer Science and Engineering</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.E.</strong> - CSE (Cyber Security)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.Tech.</strong> - Artificial Intelligence and Data Science</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.Tech.</strong> - Computer Science and Business Systems</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                        <span><strong>B.Tech.</strong> - Information Technology</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* PG & Ph.D. COURSES COLUMN */}
+                  <div className="space-y-5 flex flex-col justify-between">
+                    <div className="space-y-3">
+                      <div className="inline-block bg-[#0B2A63] text-white px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase shadow-xs">
+                        PG COURSES
+                      </div>
+                      <ul className="space-y-1.5 text-xs text-slate-800 font-medium">
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                          <span><strong>M.E.</strong> - Communication Systems</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
+                          <span><strong>M.E.</strong> - Thermal Engineering</span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="space-y-3 pt-2 border-t border-slate-100">
+                      <div className="inline-block bg-[#0B2A63] text-white px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase shadow-xs">
+                        Ph.D. PROGRAMMES
+                      </div>
+                      <p className="text-xs text-slate-600 leading-relaxed">
+                        Approved Research Centres for Doctoral Degrees under Anna University, Chennai.
+                      </p>
+                    </div>
+
+                    {/* Palani Highway Location Tag */}
+                    <div className="p-3 bg-[#FCFBF7] rounded-lg border border-[#0B2A63]/15 text-xs text-[#0B2A63]">
+                      <span className="font-bold block">SSMIET Dindigul Campus</span>
+                      <span className="text-slate-600">Palani Highway, Dindigul - 624 002</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Call to Actions */}
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <Link
                   to={user ? portalRoute : "/register"}
-                  className="inline-flex items-center gap-2 bg-navy-900 hover:bg-navy-950 text-white px-5 py-2.5 rounded-lg font-semibold text-sm shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 whitespace-nowrap border-b-2 border-amber-500 group"
+                  className="inline-flex items-center gap-2 bg-[#0B2A63] hover:bg-[#061838] text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap border-b-2 border-[#F59E0B] group"
                 >
                   <span>{user ? `Go to ${portalLabel}` : "Explore Student Portal"}</span>
                   <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -307,104 +399,77 @@ export function LandingPage() {
 
                 <a
                   href="#departments"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm text-slate-700 hover:text-navy-900 bg-white hover:bg-slate-50 hover:border-slate-400 hover:shadow-xs active:scale-[0.98] border border-slate-300 transition-all duration-200 whitespace-nowrap group"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm text-[#0B2A63] hover:text-[#D32F2F] bg-white hover:bg-[#F0F4FA] border border-[#0B2A63]/30 transition-all duration-200 whitespace-nowrap group"
                 >
-                  <BookOpen className="h-4 w-4 text-navy-900 group-hover:scale-110 transition-transform duration-200" />
-                  <span>Explore 10 Departments</span>
+                  <BookOpen className="h-4 w-4 text-[#0B2A63] group-hover:scale-110 transition-transform duration-200" />
+                  <span>View All 10 Disciplines</span>
                 </a>
-              </div>
-
-              <div className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-slate-600">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-navy-900" />
-                  <span className="font-medium">10 Engineering Disciplines</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-red-600" />
-                  <span className="font-medium">NAAC & NBA Accredited</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-amber-600" />
-                  <span className="font-medium">Anna Univ. Matrix Analytics</span>
-                </div>
               </div>
             </div>
 
-            {/* Right Card: Professional Academic Student Card */}
+            {/* Right Content: Modern SSMIET Campus Visual Frame */}
             <div className="lg:col-span-5">
-              <div className="bg-white border border-slate-200/90 rounded-xl shadow-xs hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out p-5 sm:p-6 text-slate-900 animate-fadeInUp">
-                {/* Header */}
-                <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-navy-900 text-white flex items-center justify-center font-bold text-sm shrink-0">
-                      KK
-                    </div>
-                    <div>
-                      <span className="text-sm font-bold text-slate-900 block leading-tight">
-                        K. Karthik · Final Year B.E.
-                      </span>
-                      <span className="text-xs text-slate-500 mt-0.5 block">Computer Science & Engineering</span>
-                    </div>
+              <div className="bg-white border-2 border-[#0B2A63]/20 rounded-2xl shadow-lift overflow-hidden">
+                {/* Visual Header Banner */}
+                <div className="bg-gradient-to-r from-[#061838] via-[#0B2A63] to-[#0D357A] p-4 text-white flex items-center justify-between border-b-2 border-[#F59E0B]">
+                  <div className="flex items-center gap-2.5">
+                    <Building2 className="h-5 w-5 text-[#FBBF24]" />
+                    <span className="font-black text-sm tracking-wide">SSMIET ACADEMIC CAMPUS</span>
                   </div>
-                  <span className="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 whitespace-nowrap shadow-2xs inline-flex items-center gap-1.5">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
-                    Placement Ready
+                  <span
+                    className="text-[#FBBF24] text-xs font-serif italic"
+                    style={{ fontFamily: "Georgia, serif" }}
+                  >
+                    Infinite Possibilities
                   </span>
                 </div>
 
-                {/* Competencies Progress */}
-                <div className="space-y-3.5 pt-4">
-                  <div>
-                    <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-semibold text-slate-800">Data Structures & Algorithms</span>
-                      <span className="text-xs font-bold text-navy-900">88% · Advanced</span>
+                {/* Campus Facade Illustration / Representative Card */}
+                <div className="p-6 bg-gradient-to-b from-[#FCFBF7] to-white space-y-4">
+                  <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100 p-6 text-center">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-[#0B2A63] text-white flex items-center justify-center font-black text-2xl shadow-md mb-3 border-2 border-[#FBBF24]">
+                      SSM
                     </div>
-                    <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-navy-900 h-full w-[88%] rounded-full transition-all duration-1000 ease-out" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-semibold text-slate-800">Full-Stack Application Development</span>
-                      <span className="text-xs font-bold text-amber-700">75% · Proficient</span>
-                    </div>
-                    <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-amber-500 h-full w-[75%] rounded-full transition-all duration-1000 ease-out" />
+                    <h3 className="font-extrabold text-[#0B2A63] text-base">
+                      SSM Institute of Engineering and Technology
+                    </h3>
+                    <p className="text-xs text-[#D32F2F] font-bold mt-0.5">
+                      (An Autonomous Institution)
+                    </p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Palani Highway, Dindigul - 624 002
+                    </p>
+                    <div className="mt-3 pt-3 border-t border-slate-200/80 text-[11px] font-semibold text-slate-700">
+                      Approved by AICTE • Affiliated to Anna University • Accredited by NAAC &amp; NBA
                     </div>
                   </div>
 
-                  <div>
-                    <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-semibold text-slate-800">System Design & Cloud Architecture</span>
-                      <span className="text-xs font-bold text-navy-900">70% · Intermediate</span>
+                  {/* Student Placement Readiness Stats Card */}
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-center justify-between text-xs pb-1.5 border-b border-slate-100">
+                      <span className="font-bold text-[#0B2A63]">Skill Intelligence Highlights</span>
+                      <span className="text-xs font-extrabold text-[#15803D] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                        Anna Univ. Matrix
+                      </span>
                     </div>
-                    <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                      <div className="bg-navy-900 h-full w-[70%] rounded-full transition-all duration-1000 ease-out" />
-                    </div>
-                  </div>
 
-                  {/* Summary Metric Tiles */}
-                  <div className="grid grid-cols-2 gap-3 pt-1">
-                    <div className="bg-slate-50 border border-slate-200/80 p-3.5 rounded-lg text-xs">
-                      <div className="text-slate-500 font-medium">Verified Credentials</div>
-                      <div className="text-base font-bold text-slate-900 mt-0.5">4 Certificates</div>
-                      <div className="text-xs text-navy-900 font-semibold mt-0.5">Audited by Faculty</div>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <div className="p-3 rounded-lg bg-[#FCFBF7] border border-[#0B2A63]/15 text-left">
+                        <span className="text-[10px] uppercase font-bold text-slate-500 block">Engineering Branches</span>
+                        <span className="text-lg font-black text-[#0B2A63]">10 Disciplines</span>
+                        <span className="text-[11px] text-[#D32F2F] font-semibold block mt-0.5">SOC &amp; Non-SOC</span>
+                      </div>
+                      <div className="p-3 rounded-lg bg-[#FCFBF7] border border-[#0B2A63]/15 text-left">
+                        <span className="text-[10px] uppercase font-bold text-slate-500 block">Accreditation</span>
+                        <span className="text-lg font-black text-[#0B2A63]">NAAC &amp; NBA</span>
+                        <span className="text-[11px] text-[#F59E0B] font-semibold block mt-0.5">Autonomous Tier</span>
+                      </div>
                     </div>
-                    <div className="bg-slate-50 border border-slate-200/80 p-3.5 rounded-lg text-xs">
-                      <div className="text-slate-500 font-medium">Placement Score</div>
-                      <div className="text-base font-bold text-slate-900 mt-0.5">85 / 100 Score</div>
-                      <div className="text-xs text-amber-700 font-semibold mt-0.5">Anna Univ. Ready</div>
-                    </div>
-                  </div>
 
-                  {/* Verification Note */}
-                  <div className="p-2.5 rounded-lg bg-navy-50/70 border border-navy-100 flex items-center gap-2 text-xs text-slate-600">
-                    <ShieldCheck className="h-4 w-4 text-navy-900 shrink-0" />
-                    <span>Verified by SSMIET Training & Placement Cell · Autonomous Standards.</span>
+                    <div className="p-2.5 rounded-lg bg-[#F0F4FA] border border-[#0B2A63]/15 text-xs text-[#0B2A63] flex items-center gap-2">
+                      <ShieldCheck className="h-4 w-4 text-[#D32F2F] shrink-0" />
+                      <span>Tamper-evident Certificate Verification &amp; Audit Logs</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -413,14 +478,14 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── PLATFORM FEATURES SECTION ────────────────────────────────────────── */}
-      <section id="features" className="py-16 sm:py-20 bg-slate-50/60 border-b border-slate-200">
+      {/* ── 4. PLATFORM FEATURES ─────────────────────────────────────────────── */}
+      <section id="features" className="py-16 bg-white border-b border-[#0B2A63]/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <span className="text-xs font-bold uppercase tracking-wider text-white bg-navy-900 px-3.5 py-1 rounded-full shadow-xs border-r-4 border-amber-500">
-              Platform Features
+            <span className="text-xs font-black uppercase tracking-wider text-white bg-[#0B2A63] px-3.5 py-1 rounded-full shadow-xs border-r-4 border-[#F59E0B]">
+              Institutional Capabilities
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-2.5">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#0B2A63] mt-2.5">
               Comprehensive Skill Intelligence for SSMIET
             </h2>
             <p className="text-slate-600 mt-1.5 text-sm sm:text-base">
@@ -429,61 +494,61 @@ export function LandingPage() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="p-6 rounded-xl border border-slate-200 bg-white hover:border-navy-700/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
-              <div className="w-10 h-10 rounded-lg bg-navy-50 text-navy-900 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-navy-900 group-hover:text-white transition-all duration-200">
+            <div className="p-6 rounded-xl border border-[#0B2A63]/15 bg-[#FCFBF7] hover:border-[#0B2A63] hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
+              <div className="w-10 h-10 rounded-lg bg-[#0B2A63] text-white flex items-center justify-center mb-4 group-hover:bg-[#D32F2F] transition-colors duration-200">
                 <Layers className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-navy-900 transition-colors">Skill Tracking & Growth</h3>
+              <h3 className="font-bold text-base sm:text-lg text-[#0B2A63]">Skill Tracking &amp; Growth</h3>
               <p className="text-sm text-slate-600 mt-2 leading-relaxed">
                 Log programming, tools, core domain, and communication competencies across 4 proficiency tiers.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-slate-200 bg-white hover:border-amber-400/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
-              <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200">
+            <div className="p-6 rounded-xl border border-[#0B2A63]/15 bg-[#FCFBF7] hover:border-[#0B2A63] hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
+              <div className="w-10 h-10 rounded-lg bg-[#0B2A63] text-white flex items-center justify-center mb-4 group-hover:bg-[#F59E0B] transition-colors duration-200">
                 <BookOpen className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-amber-800 transition-colors">Department Requirements</h3>
+              <h3 className="font-bold text-base sm:text-lg text-[#0B2A63]">Department Requirements</h3>
               <p className="text-sm text-slate-600 mt-2 leading-relaxed">
                 Faculty-defined target matrices tailored to academic year and specific branch specializations.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-slate-200 bg-white hover:border-navy-700/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
-              <div className="w-10 h-10 rounded-lg bg-navy-50 text-navy-900 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-navy-900 group-hover:text-white transition-all duration-200">
+            <div className="p-6 rounded-xl border border-[#0B2A63]/15 bg-[#FCFBF7] hover:border-[#0B2A63] hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
+              <div className="w-10 h-10 rounded-lg bg-[#0B2A63] text-white flex items-center justify-center mb-4 group-hover:bg-[#D32F2F] transition-colors duration-200">
                 <Compass className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-navy-900 transition-colors">Roadmaps & Goals</h3>
+              <h3 className="font-bold text-base sm:text-lg text-[#0B2A63]">Roadmaps &amp; Goals</h3>
               <p className="text-sm text-slate-600 mt-2 leading-relaxed">
                 Milestone tracking with target deadlines, overdue alerts, and step-by-step progress metrics.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-slate-200 bg-white hover:border-amber-400/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
-              <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200">
+            <div className="p-6 rounded-xl border border-[#0B2A63]/15 bg-[#FCFBF7] hover:border-[#0B2A63] hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
+              <div className="w-10 h-10 rounded-lg bg-[#0B2A63] text-white flex items-center justify-center mb-4 group-hover:bg-[#F59E0B] transition-colors duration-200">
                 <Award className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-amber-800 transition-colors">Projects & Achievements</h3>
+              <h3 className="font-bold text-base sm:text-lg text-[#0B2A63]">Projects &amp; Achievements</h3>
               <p className="text-sm text-slate-600 mt-2 leading-relaxed">
                 Document engineering projects with tech stacks, repository links, hackathons, and symposium honors.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-slate-200 bg-white hover:border-navy-700/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
-              <div className="w-10 h-10 rounded-lg bg-navy-50 text-navy-900 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-navy-900 group-hover:text-white transition-all duration-200">
+            <div className="p-6 rounded-xl border border-[#0B2A63]/15 bg-[#FCFBF7] hover:border-[#0B2A63] hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
+              <div className="w-10 h-10 rounded-lg bg-[#0B2A63] text-white flex items-center justify-center mb-4 group-hover:bg-[#D32F2F] transition-colors duration-200">
                 <ShieldCheck className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-navy-900 transition-colors">Certificate Review Center</h3>
+              <h3 className="font-bold text-base sm:text-lg text-[#0B2A63]">Certificate Review Center</h3>
               <p className="text-sm text-slate-600 mt-2 leading-relaxed">
                 Secure PDF/Image upload pipeline reviewed by authorized administrators with audit history.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-slate-200 bg-white hover:border-amber-400/80 hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
-              <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200">
+            <div className="p-6 rounded-xl border border-[#0B2A63]/15 bg-[#FCFBF7] hover:border-[#0B2A63] hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out group">
+              <div className="w-10 h-10 rounded-lg bg-[#0B2A63] text-white flex items-center justify-center mb-4 group-hover:bg-[#F59E0B] transition-colors duration-200">
                 <Briefcase className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-base sm:text-lg text-slate-900 group-hover:text-amber-800 transition-colors">Placement Readiness</h3>
+              <h3 className="font-bold text-base sm:text-lg text-[#0B2A63]">Placement Readiness</h3>
               <p className="text-sm text-slate-600 mt-2 leading-relaxed">
                 Track Coding, Aptitude, Technical, and Mock Interview evaluations to compute readiness scores.
               </p>
@@ -492,17 +557,17 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── DEPARTMENT EXPLORER ──────────────────────────────────────────────── */}
-      <section id="departments" className="py-16 sm:py-20 bg-white border-b border-slate-200">
+      {/* ── 5. DEPARTMENT EXPLORER ───────────────────────────────────────────── */}
+      <section id="departments" className="py-16 sm:py-20 bg-[#FCFBF7] border-b border-[#0B2A63]/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div>
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-50 border border-amber-200/90 px-3.5 py-1 rounded-full shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-600" />
+              <span className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-[#0B2A63] bg-white border border-[#0B2A63]/20 px-3.5 py-1 rounded-full shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
                 Academic Disciplines
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 mt-2.5">
-                SSMIET Engineering Programmes
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#0B2A63] mt-2.5">
+                SSMIET Engineering Departments
               </h2>
               <p className="text-slate-600 mt-1.5 text-sm sm:text-base max-w-xl leading-relaxed">
                 Explore accredited undergraduate engineering departments at SSMIET and their targeted core competencies.
@@ -511,43 +576,43 @@ export function LandingPage() {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <div className="relative flex-1 sm:w-64">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#0B2A63]/50 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search branch or skill..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="h-10 pl-10 pr-4 bg-white border border-slate-300 rounded-lg text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-navy-900 focus:border-navy-900 focus:shadow-xs w-full transition-all duration-200"
+                  className="h-10 pl-10 pr-4 bg-white border border-[#0B2A63]/20 rounded-lg text-sm text-[#0B2A63] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B2A63] focus:border-[#0B2A63] w-full transition-all duration-200"
                 />
               </div>
 
-              <div className="h-10 inline-flex items-center bg-slate-100/90 p-1 rounded-lg text-xs font-semibold shrink-0 border border-slate-200/70">
+              <div className="h-10 inline-flex items-center bg-white p-1 rounded-lg text-xs font-semibold shrink-0 border border-[#0B2A63]/20 shadow-xs">
                 <button
                   onClick={() => setSelectedCategory("ALL")}
-                  className={`h-8 px-3.5 rounded-md transition-all duration-150 whitespace-nowrap flex items-center font-bold active:scale-95 ${
+                  className={`h-8 px-3.5 rounded-md transition-all duration-150 whitespace-nowrap flex items-center font-bold ${
                     selectedCategory === "ALL"
-                      ? "bg-navy-900 text-white shadow-xs"
-                      : "text-slate-600 hover:text-navy-900 hover:bg-white/60 font-medium"
+                      ? "bg-[#0B2A63] text-white shadow-xs"
+                      : "text-slate-600 hover:text-[#0B2A63] hover:bg-[#F0F4FA]"
                   }`}
                 >
                   All (10)
                 </button>
                 <button
                   onClick={() => setSelectedCategory("soc")}
-                  className={`h-8 px-3.5 rounded-md transition-all duration-150 whitespace-nowrap flex items-center font-bold active:scale-95 ${
+                  className={`h-8 px-3.5 rounded-md transition-all duration-150 whitespace-nowrap flex items-center font-bold ${
                     selectedCategory === "soc"
-                      ? "bg-navy-900 text-white shadow-xs"
-                      : "text-slate-600 hover:text-navy-900 hover:bg-white/60 font-medium"
+                      ? "bg-[#0B2A63] text-white shadow-xs"
+                      : "text-slate-600 hover:text-[#0B2A63] hover:bg-[#F0F4FA]"
                   }`}
                 >
                   Computing (SOC)
                 </button>
                 <button
                   onClick={() => setSelectedCategory("non_soc")}
-                  className={`h-8 px-3.5 rounded-md transition-all duration-150 whitespace-nowrap flex items-center font-bold active:scale-95 ${
+                  className={`h-8 px-3.5 rounded-md transition-all duration-150 whitespace-nowrap flex items-center font-bold ${
                     selectedCategory === "non_soc"
-                      ? "bg-navy-900 text-white shadow-xs"
-                      : "text-slate-600 hover:text-navy-900 hover:bg-white/60 font-medium"
+                      ? "bg-[#0B2A63] text-white shadow-xs"
+                      : "text-slate-600 hover:text-[#0B2A63] hover:bg-[#F0F4FA]"
                   }`}
                 >
                   Non-SOC Disciplines
@@ -557,14 +622,14 @@ export function LandingPage() {
           </div>
 
           {filteredDepts.length === 0 ? (
-            <div className="text-center py-12 bg-slate-50 rounded-xl border border-slate-200 p-8">
+            <div className="text-center py-12 bg-white rounded-xl border border-[#0B2A63]/15 p-8">
               <p className="text-slate-500 text-sm">No departments match your query "{search}".</p>
               <button
                 onClick={() => {
                   setSearch("");
                   setSelectedCategory("ALL");
                 }}
-                className="mt-3 text-xs font-semibold text-navy-900 hover:underline"
+                className="mt-3 text-xs font-bold text-[#0B2A63] hover:underline"
               >
                 Clear filters
               </button>
@@ -579,114 +644,97 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── CERTIFICATE VERIFICATION LOOKUP ──────────────────────────────────── */}
-      <section id="verification" className="py-16 sm:py-20 bg-navy-50/40 border-b border-slate-200">
+      {/* ── 6. CERTIFICATE VERIFICATION LOOKUP ───────────────────────────────── */}
+      <section id="verification" className="py-16 sm:py-20 bg-white border-b border-[#0B2A63]/15">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <span className="text-xs font-bold uppercase tracking-wider text-white bg-navy-900 px-3.5 py-1 rounded-full shadow-xs border-r-4 border-amber-500">
-              Institutional Trust & Verification
+            <span className="text-xs font-black uppercase tracking-wider text-white bg-[#0B2A63] px-3.5 py-1 rounded-full shadow-xs border-r-4 border-[#F59E0B]">
+              Institutional Trust &amp; Verification
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-2">
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#0B2A63] mt-2">
               Official Certificate Verification
             </h2>
             <p className="text-slate-600 mt-1.5 text-sm max-w-xl mx-auto">
-              Verify the authenticity of certificates awarded to SSMIET students without exposing private student records or confidential documents.
+              Verify the authenticity of credentials awarded to SSMIET students without exposing private student records or confidential documents.
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 shadow-sm">
+          <div className="bg-[#FCFBF7] border border-[#0B2A63]/20 rounded-2xl p-6 sm:p-8 shadow-sm">
             <form onSubmit={handleVerifySubmit} className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#0B2A63]/50 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder="Enter Certificate UUID (e.g. 550e8400-e29b-41d4-a716-446655440000)"
+                  placeholder="Paste Certificate UUID (e.g. 550e8400-e29b-41d4-a716-446655440000)..."
                   value={certInputId}
                   onChange={(e) => setCertInputId(e.target.value)}
-                  className="w-full h-11 pl-11 pr-4 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-navy-900 font-mono text-slate-900 placeholder:text-slate-400"
-                  required
+                  className="w-full h-12 pl-11 pr-4 bg-white border border-[#0B2A63]/25 rounded-xl text-sm text-[#0B2A63] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B2A63] font-mono shadow-xs"
                 />
               </div>
               <button
                 type="submit"
-                disabled={isVerifying}
-                className="h-11 bg-navy-900 hover:bg-navy-950 text-white px-6 rounded-lg font-semibold text-sm shadow-xs transition-all flex items-center justify-center gap-2 whitespace-nowrap border-b-2 border-amber-500"
+                disabled={isVerifying || !certInputId.trim()}
+                className="h-12 px-6 bg-[#0B2A63] hover:bg-[#061838] disabled:opacity-50 text-white font-bold text-sm rounded-xl shadow-xs inline-flex items-center justify-center gap-2 transition-all whitespace-nowrap border-b-2 border-[#F59E0B]"
               >
-                {isVerifying ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4 text-amber-400" />}
-                <span>Verify Credential</span>
+                {isVerifying ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin text-[#FBBF24]" />
+                    <span>Verifying...</span>
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck className="h-4 w-4 text-[#FBBF24]" />
+                    <span>Verify Authenticity</span>
+                  </>
+                )}
               </button>
             </form>
 
             {/* Results Display */}
             {hasVerified && (
-              <div className="mt-6 pt-6 border-t border-slate-200">
-                {verificationData && (
-                  <div className="bg-white rounded-xl border border-emerald-300 p-5 sm:p-6 shadow-xs space-y-3.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
-                        <span className="font-bold text-emerald-950 text-sm sm:text-base">
-                          Verified Institutional Record
+              <div className="mt-6 pt-6 border-t border-[#0B2A63]/15">
+                {verificationData ? (
+                  <div className="bg-white border-2 border-emerald-500/50 rounded-xl p-5 shadow-xs animate-fadeInUp">
+                    <div className="flex items-center gap-2 text-emerald-800 font-black text-sm mb-3">
+                      <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
+                      <span>OFFICIAL VERIFICATION: CERTIFICATE IS AUTHENTIC &amp; REVIEWED</span>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <span className="text-slate-400 block font-medium">Title</span>
+                        <span className="font-bold text-[#0B2A63] text-sm">{verificationData.title}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block font-medium">Issuing Body</span>
+                        <span className="font-semibold text-slate-800">{verificationData.issuer}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block font-medium">Student</span>
+                        <span className="font-semibold text-slate-800">{verificationData.student_name}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block font-medium">Department</span>
+                        <span className="font-semibold text-slate-800">{verificationData.department ?? "General"}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block font-medium">Issue Date</span>
+                        <span className="font-semibold text-slate-800">{verificationData.issue_date}</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block font-medium">Verification Status</span>
+                        <span className="inline-block px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-extrabold uppercase">
+                          Audited by SSMIET Authority
                         </span>
                       </div>
-                      <span className="text-xs font-mono bg-emerald-50 text-emerald-800 px-2.5 py-1 rounded-md border border-emerald-200 font-bold shadow-2xs">
-                        STATUS: VERIFIED
-                      </span>
                     </div>
-
-                    <div className="grid sm:grid-cols-2 gap-4 text-xs sm:text-sm pt-1">
-                      <div>
-                        <span className="text-slate-500 block font-medium text-xs">Certificate Title</span>
-                        <span className="text-slate-900 font-bold text-sm sm:text-base">{verificationData.title}</span>
-                      </div>
-                      <div>
-                        <span className="text-slate-500 block font-medium text-xs">Issuing Organization</span>
-                        <span className="text-slate-900 font-semibold">{verificationData.issuer}</span>
-                      </div>
-                      <div>
-                        <span className="text-slate-500 block font-medium text-xs">Student</span>
-                        <span className="text-slate-900 font-semibold">{verificationData.student_name}</span>
-                        {verificationData.department && (
-                          <span className="text-slate-500 block text-xs mt-0.5">{verificationData.department}</span>
-                        )}
-                      </div>
-                      <div>
-                        <span className="text-slate-500 block font-medium text-xs">Issue Date</span>
-                        <span className="text-slate-900 font-semibold">{verificationData.issue_date}</span>
-                        {verificationData.verified_at && (
-                          <span className="text-slate-500 block text-xs mt-0.5">
-                            Audited on {new Date(verificationData.verified_at).toLocaleDateString()}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {verificationData.credential_url && (
-                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
-                        <span className="text-slate-500">External Issuer Link:</span>
-                        <a
-                          href={verificationData.credential_url}
-                          target="_blank"
-                          rel="noopener noreferrer nofollow"
-                          className="text-navy-900 font-semibold inline-flex items-center gap-1 hover:underline"
-                        >
-                          <span>External Credential URL</span>
-                          <ExternalLink className="h-3 w-3" />
-                        </a>
-                      </div>
-                    )}
                   </div>
-                )}
-
-                {verificationError && (
-                  <div className="bg-amber-50 rounded-xl border border-amber-200 p-4 flex items-start gap-3 text-amber-950">
-                    <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
-                    <div className="text-xs">
-                      <p className="font-bold">Certificate Record Not Found or Unverified</p>
-                      <p className="mt-1 text-amber-900 leading-relaxed">
-                        No public verified certificate matches this ID. Certificates must be verified by an authorized SSMIET administrator and published by the student to be displayed.
-                      </p>
-                    </div>
+                ) : (
+                  <div className="bg-white border border-red-200 rounded-xl p-4 text-xs text-[#D32F2F] flex items-center gap-2.5">
+                    <AlertCircle className="h-5 w-5 shrink-0" />
+                    <span>
+                      Certificate record not found or not published for public verification. Please verify the ID with the student or college administration.
+                    </span>
                   </div>
                 )}
               </div>
@@ -695,156 +743,57 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── PORTAL ACCESS & SIGN IN ───────────────────────────────────────────── */}
-      <section id="portals" className="py-16 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-xs font-bold uppercase tracking-wider text-white bg-navy-900 px-3.5 py-1 rounded-full shadow-xs border-r-4 border-amber-500">
-              Institutional Access
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 mt-2">
-              Sign In to SSMIET Portals
-            </h2>
-            <p className="text-slate-600 mt-1.5 text-sm sm:text-base leading-relaxed">
-              Direct access for SSMIET students, faculty review mentors, and placement coordinators.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {/* Student Card */}
-            <div className="bg-white rounded-xl border border-slate-200 hover:border-navy-700/80 p-6 shadow-xs hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col justify-between group">
-              <div>
-                <div className="w-10 h-10 rounded-lg bg-navy-50 text-navy-900 flex items-center justify-center font-bold mb-4 group-hover:scale-110 group-hover:bg-navy-900 group-hover:text-white transition-all duration-200">
-                  <UserCheck className="h-5 w-5" />
-                </div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-navy-50 text-navy-900 border border-navy-200/90 shadow-2xs group-hover:bg-navy-900 group-hover:text-white group-hover:border-navy-900 transition-colors duration-200">
-                  Student Portal
-                </span>
-                <h3 className="text-lg font-bold text-slate-900 mt-3.5 group-hover:text-navy-900 transition-colors">Student Dashboard</h3>
-                <p className="text-sm text-slate-600 mt-2 leading-relaxed min-h-[4.25rem]">
-                  Log programming skills, upload certificates for departmental review, track learning roadmaps, and monitor placement readiness.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-100 flex flex-col gap-2">
-                <Link
-                  to="/login"
-                  className="w-full text-center py-2.5 bg-navy-900 hover:bg-navy-950 text-white font-semibold rounded-lg text-sm shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 border-b-2 border-amber-500"
-                >
-                  Sign In as Student
-                </Link>
-                <Link
-                  to="/register"
-                  className="text-center text-xs font-semibold text-amber-700 hover:text-amber-800 hover:underline py-0.5 transition-colors"
-                >
-                  New Student? Register here
-                </Link>
-              </div>
-            </div>
-
-            {/* Faculty Card */}
-            <div className="bg-white rounded-xl border border-slate-200 hover:border-amber-400/80 p-6 shadow-xs hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col justify-between group">
-              <div>
-                <div className="w-10 h-10 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center font-bold mb-4 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200">
-                  <Award className="h-5 w-5" />
-                </div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 border border-amber-200/90 shadow-2xs group-hover:bg-amber-500 group-hover:text-white group-hover:border-amber-500 transition-colors duration-200">
-                  Faculty Review
-                </span>
-                <h3 className="text-lg font-bold text-slate-900 mt-3.5 group-hover:text-amber-800 transition-colors">Faculty & Advisor Workspace</h3>
-                <p className="text-sm text-slate-600 mt-2 leading-relaxed min-h-[4.25rem]">
-                  Review student certificate uploads, inspect authentic document evidence, submit approval decisions, and provide constructive feedback.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-100">
-                <Link
-                  to="/login"
-                  className="block w-full text-center py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg text-sm shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200"
-                >
-                  Sign In as Faculty
-                </Link>
-              </div>
-            </div>
-
-            {/* Admin & Placement Card */}
-            <div className="bg-white rounded-xl border border-slate-200 hover:border-slate-500/80 p-6 shadow-xs hover:shadow-lift hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col justify-between group">
-              <div>
-                <div className="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold mb-4 group-hover:scale-110 group-hover:bg-slate-900 group-hover:text-white transition-all duration-200">
-                  <LayoutDashboard className="h-5 w-5" />
-                </div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 border border-slate-200 shadow-2xs group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-colors duration-200">
-                  Administration
-                </span>
-                <h3 className="text-lg font-bold text-slate-900 mt-3.5 group-hover:text-slate-900 transition-colors">Placement & Admin Console</h3>
-                <p className="text-sm text-slate-600 mt-2 leading-relaxed min-h-[4.25rem]">
-                  Manage college departments, configure curriculum matrices, export placement summaries, and monitor institution-wide skill progress.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-100">
-                <Link
-                  to="/login"
-                  className="block w-full text-center py-2.5 bg-slate-900 hover:bg-black text-white font-semibold rounded-lg text-sm shadow-xs hover:shadow-md hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200"
-                >
-                  Sign In as Administrator
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── ABOUT SSMIET SECTION ────────────────────────────────────────────── */}
-      <section id="about" className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
+      {/* ── 7. ABOUT SSMIET ─────────────────────────────────────────────────── */}
+      <section id="about" className="py-16 bg-[#FCFBF7] border-b border-[#0B2A63]/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-3.5">
-              <span className="text-xs font-bold uppercase tracking-wider text-white bg-navy-900 px-3.5 py-1 rounded-full shadow-xs border-r-4 border-amber-500">
+            <div className="lg:col-span-7 space-y-4">
+              <span className="text-xs font-black uppercase tracking-wider text-white bg-[#0B2A63] px-3.5 py-1 rounded-full shadow-xs border-r-4 border-[#F59E0B]">
                 Institutional Profile
               </span>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#0B2A63]">
                 SSM Institute of Engineering and Technology
               </h2>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                SSM Institute of Engineering and Technology (SSMIET), an Autonomous Institution established in Dindigul, Tamil Nadu,
-                is dedicated to providing high-quality engineering education across computing, circuit, and core disciplines.
+              <p className="text-slate-700 text-sm sm:text-base leading-relaxed">
+                SSM Institute of Engineering and Technology (SSMIET), an Autonomous Institution located on the Palani Highway in Dindigul, Tamil Nadu, is committed to producing world-class engineers equipped with cutting-edge industry competencies.
               </p>
               <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-                Approved by AICTE, New Delhi • Affiliated to Anna University, Chennai • Accredited by NAAC & NBA.
-                The SkillTrack platform operates as the institution's skill intelligence infrastructure, providing transparent
-                verification workflows for career preparation and placement enablement.
+                Approved by AICTE, New Delhi • Affiliated to Anna University, Chennai • Accredited by NAAC &amp; NBA.
+                SkillTrack functions as the college's authoritative skill intelligence and placement management platform, providing tamper-evident portfolio hosting and department curriculum benchmarking.
               </p>
-              <div className="pt-1">
+              <div className="pt-2">
                 <a
                   href="https://ssmiet.ac.in/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-navy-900 hover:text-amber-600 text-sm font-semibold underline underline-offset-4 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-[#0B2A63] hover:text-[#D32F2F] text-sm font-bold underline underline-offset-4 transition-colors"
                 >
-                  <span>Visit Official SSMIET Institutional Website (ssmiet.ac.in)</span>
+                  <span>Visit Official Institutional Website (ssmiet.ac.in)</span>
                   <ExternalLink className="h-4 w-4" />
                 </a>
               </div>
             </div>
 
-            <div className="lg:col-span-5 bg-white border border-slate-200 p-5 sm:p-6 rounded-xl space-y-3 shadow-xs">
-              <h3 className="font-bold text-xs text-slate-900 uppercase tracking-wider pb-2 border-b border-slate-100">
-                Campus Reference
+            <div className="lg:col-span-5 bg-white border-2 border-[#0B2A63]/20 p-6 rounded-2xl space-y-3.5 shadow-sm">
+              <h3 className="font-extrabold text-xs text-[#0B2A63] uppercase tracking-wider pb-2 border-b border-slate-100">
+                Official Campus Reference
               </h3>
-              <div className="space-y-2.5 text-xs text-slate-600">
+              <div className="space-y-3 text-xs text-slate-700">
                 <div>
                   <span className="text-slate-400 block font-medium">Institution</span>
-                  <span className="font-semibold text-slate-900">SSM Institute of Engineering and Technology</span>
+                  <span className="font-bold text-[#0B2A63] text-sm">SSM Institute of Engineering and Technology</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block font-medium">Status</span>
-                  <span className="font-semibold text-navy-900">An Autonomous Institution</span>
+                  <span className="text-slate-400 block font-medium">Institutional Status</span>
+                  <span className="font-extrabold text-[#D32F2F]">An Autonomous Institution</span>
                 </div>
                 <div>
                   <span className="text-slate-400 block font-medium">Campus Location</span>
-                  <span>Palani Highway, Dindigul - 624 002, Tamil Nadu, India</span>
+                  <span>Palani Highway, Dindigul – 624 002, Tamil Nadu, India</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block font-medium">Accreditation & Affiliation</span>
-                  <span>Approved by AICTE, New Delhi • Affiliated to Anna University, Chennai • Accredited by NAAC & NBA</span>
+                  <span className="text-slate-400 block font-medium">Accreditations &amp; Affiliations</span>
+                  <span>Approved by AICTE, New Delhi • Affiliated to Anna University, Chennai • Accredited by NAAC &amp; NBA</span>
                 </div>
               </div>
             </div>
@@ -852,68 +801,74 @@ export function LandingPage() {
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────────────────────────── */}
-      <footer className="bg-navy-900 text-slate-300 border-t-4 border-amber-500 text-xs py-10">
+      {/* ── 8. INSTITUTIONAL FOOTER ─────────────────────────────────────────── */}
+      <footer className="bg-gradient-to-b from-[#0B2A63] to-[#061838] text-slate-200 border-t-4 border-[#F59E0B] text-xs py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <div className="flex items-center gap-2 text-white font-bold text-base mb-2">
-              <div className="w-6 h-6 rounded bg-red-600 text-white font-black text-xs flex items-center justify-center">
+            <div className="flex items-center gap-2.5 text-white font-bold text-base mb-2.5">
+              <div className="w-8 h-8 rounded-lg bg-[#D32F2F] text-white font-black text-xs flex items-center justify-center border border-white/40 shadow-xs">
                 SSM
               </div>
-              <span><span className="text-red-500 font-extrabold">SSM</span> SkillTrack</span>
-              <span className="inline-block w-2 h-2 rounded-full bg-amber-500" />
+              <div className="flex flex-col">
+                <span className="text-sm font-black tracking-tight leading-none">
+                  SSMIET SkillTrack
+                </span>
+                <span className="text-[10px] text-[#FBBF24] font-semibold mt-0.5">
+                  Autonomous · Dindigul
+                </span>
+              </div>
             </div>
-            <p className="text-slate-400 leading-relaxed">
-              Student Skill Intelligence, Certificate Verification & Placement Readiness Platform for SSM Institute of Engineering and Technology.
+            <p className="text-slate-300 leading-relaxed text-xs">
+              Student Skill Intelligence, Certificate Verification &amp; Placement Readiness Platform for SSM Institute of Engineering and Technology.
             </p>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-2.5">Navigation</h4>
-            <ul className="space-y-1.5">
+            <h4 className="text-[#FBBF24] font-bold uppercase tracking-wider mb-3">Academic Sections</h4>
+            <ul className="space-y-2 text-slate-300">
               <li>
-                <a href="#departments" className="hover:text-amber-400 transition-colors">
-                  Engineering Departments
+                <a href="#courses" className="hover:text-white transition-colors">
+                  UG &amp; PG Programmes
                 </a>
               </li>
               <li>
-                <a href="#features" className="hover:text-amber-400 transition-colors">
-                  Platform Features
+                <a href="#departments" className="hover:text-white transition-colors">
+                  10 Engineering Disciplines
                 </a>
               </li>
               <li>
-                <a href="#verification" className="hover:text-amber-400 transition-colors">
-                  Public Certificate Verification
+                <a href="#features" className="hover:text-white transition-colors">
+                  Skill Intelligence Matrix
                 </a>
               </li>
               <li>
-                <a href="#about" className="hover:text-amber-400 transition-colors">
-                  About SSMIET
+                <a href="#verification" className="hover:text-white transition-colors">
+                  Certificate Verification
                 </a>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-2.5">Portals</h4>
-            <ul className="space-y-1.5">
+            <h4 className="text-[#FBBF24] font-bold uppercase tracking-wider mb-3">Portals &amp; Access</h4>
+            <ul className="space-y-2 text-slate-300">
               <li>
-                <Link to="/login" className="hover:text-amber-400 transition-colors">
+                <Link to="/login" className="hover:text-white transition-colors">
                   Student Sign In
                 </Link>
               </li>
               <li>
-                <Link to="/register" className="hover:text-amber-400 transition-colors">
+                <Link to="/register" className="hover:text-white transition-colors">
                   Student Registration
                 </Link>
               </li>
               <li>
-                <Link to="/login" className="hover:text-amber-400 transition-colors">
-                  Faculty & Coordinator Access
+                <Link to="/login" className="hover:text-white transition-colors">
+                  Faculty &amp; Coordinator Portal
                 </Link>
               </li>
               <li>
-                <Link to="/login" className="hover:text-amber-400 transition-colors">
+                <Link to="/login" className="hover:text-white transition-colors">
                   Administrative Console
                 </Link>
               </li>
@@ -921,32 +876,33 @@ export function LandingPage() {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-2.5">Official Reference</h4>
-            <ul className="space-y-1.5">
-              <li>
+            <h4 className="text-[#FBBF24] font-bold uppercase tracking-wider mb-3">Campus Address</h4>
+            <ul className="space-y-1.5 text-slate-300">
+              <li className="font-semibold text-white">SSM Institute of Engineering and Technology</li>
+              <li>Palani Highway, Dindigul – 624 002</li>
+              <li>Tamil Nadu, India</li>
+              <li className="pt-2">
                 <a
                   href="https://ssmiet.ac.in/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-amber-400 inline-flex items-center gap-1"
+                  className="hover:text-[#FBBF24] inline-flex items-center gap-1 font-semibold text-white underline"
                 >
                   <span>ssmiet.ac.in</span>
                   <ExternalLink className="h-3 w-3" />
                 </a>
               </li>
-              <li className="text-slate-400">Palani Highway, Dindigul - 624 002</li>
-              <li className="text-slate-400 pt-0.5">Autonomous · Anna University Affiliated</li>
             </ul>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-xs">
           <div>
             © {new Date().getFullYear()} SSM Institute of Engineering and Technology (An Autonomous Institution). All rights reserved.
           </div>
           <div className="flex gap-4">
-            <a href="https://ssmiet.ac.in/" target="_blank" rel="noopener noreferrer" className="hover:text-amber-300">
-              Official Institutional Portal
+            <a href="https://ssmiet.ac.in/" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBBF24]">
+              Official SSMIET Institutional Portal
             </a>
           </div>
         </div>

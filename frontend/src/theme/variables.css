@@ -1,113 +1,122 @@
 /**
  * SkillTrack - Centralized Design Tokens & CSS Variables
- * Conforms to project standards: Rule 6 (Centralize CSS Variables)
+ * STRICTLY based on the official SSM Institute of Engineering and Technology poster:
+ * - Royal Navy: #0B2A63
+ * - Midnight Navy: #061838
+ * - SSM Red: #D32F2F
+ * - Deep Crimson: #991B1B
+ * - Golden Amber: #F59E0B
+ * - Bright Saffron Gold: #FBBF24
+ * - Warm Ivory Canvas: #FCFBF7
  */
 
 :root {
-  /* Brand & Core Palette - SSMIET Deep Navy, SSM Red & Golden Amber */
-  --color-primary: #0a2540;
-  --color-primary-hover: #051322;
-  --color-primary-light: #f0f4f9;
-  --color-primary-border: #b8cde3;
+  /* Brand & Core Palette - Poster Colors */
+  --color-primary: #0B2A63;
+  --color-primary-hover: #061838;
+  --color-primary-light: #F0F4FA;
+  --color-primary-border: #99B2D8;
 
-  --color-ssm-red: #dc2626;
-  --color-ssm-red-hover: #b91c1c;
-  --color-ssm-red-light: #fef2f2;
+  --color-ssm-red: #D32F2F;
+  --color-ssm-red-hover: #B71C1C;
+  --color-ssm-red-light: #FEF2F2;
+  --color-ssm-crimson: #991B1B;
 
-  --color-accent: #ea580c;
-  --color-accent-hover: #c2410c;
-  --color-accent-light: #fff7ed;
-  --color-accent-border: #fed7aa;
-  --color-accent-text: #9a3412;
+  --color-accent: #F59E0B;
+  --color-accent-hover: #D97706;
+  --color-accent-light: #FFFBEB;
+  --color-accent-border: #FDE68A;
+  --color-accent-text: #B45309;
 
-  --color-gold: #f59e0b;
-  --color-gold-light: #fffbeb;
-  --color-gold-border: #fde68a;
+  --color-gold: #FBBF24;
+  --color-gold-light: #FEFCE8;
+  --color-gold-border: #FDE047;
 
-  --color-background: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f8fafc;
-  --color-surface-hover: #f1f5f9;
+  --color-background: #FCFBF7;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F8F9FA;
+  --color-surface-hover: #F1F4F9;
 
-  --color-text: #0f172a;
-  --color-text-soft: #475569;
-  --color-text-muted: #64748b;
-  --color-text-faint: #94a3b8;
+  --color-text: #0B2A63;
+  --color-text-body: #1E293B;
+  --color-text-soft: #334155;
+  --color-text-muted: #64748B;
+  --color-text-faint: #94A3B8;
 
-  --color-border: #e2e8f0;
-  --color-border-light: #f1f5f9;
-  --color-border-dark: #cbd5e1;
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+  --color-border-dark: #CBD5E1;
 
   /* Status & Semantics */
-  --color-success: #16a34a;
-  --color-success-bg: #dcfce7;
-  --color-success-text: #15803d;
-  --color-success-border: #86efac;
+  --color-success: #15803D;
+  --color-success-bg: #DCFCE7;
+  --color-success-text: #14532D;
+  --color-success-border: #86EFAC;
 
-  --color-warning: #d97706;
-  --color-warning-bg: #fef3c7;
-  --color-warning-text: #b45309;
-  --color-warning-border: #fde047;
+  --color-warning: #D97706;
+  --color-warning-bg: #FEF3C7;
+  --color-warning-text: #92400E;
+  --color-warning-border: #FDE047;
 
-  --color-danger: #dc2626;
-  --color-danger-bg: #fee2e2;
-  --color-danger-text: #b91c1c;
-  --color-danger-border: #fca5a5;
+  --color-danger: #D32F2F;
+  --color-danger-bg: #FEE2E2;
+  --color-danger-text: #991B1B;
+  --color-danger-border: #FCA5A5;
 
-  --color-info: #0284c7;
-  --color-info-bg: #e0f2fe;
-  --color-info-text: #0369a1;
-  --color-info-border: #bae6fd;
+  --color-info: #0B2A63;
+  --color-info-bg: #F0F4FA;
+  --color-info-text: #0B2A63;
+  --color-info-border: #99B2D8;
 
-  /* Gamification & Heatmap Levels */
-  --color-heatmap-empty: #e2e8f0;
-  --color-heatmap-level-1: #bae6fd;
-  --color-heatmap-level-2: #38bdf8;
-  --color-heatmap-level-3: #0284c7;
-  --color-heatmap-level-4: #0369a1;
+  /* Gamification & Heatmap Levels (Navy-based contribution graph) */
+  --color-heatmap-empty: #E2E8F0;
+  --color-heatmap-level-1: #D0DCEF;
+  --color-heatmap-level-2: #8EACDF;
+  --color-heatmap-level-3: #3B72C2;
+  --color-heatmap-level-4: #0B2A63;
 
   /* Badges Tiers */
-  --badge-bronze-border: #fde68a;
-  --badge-bronze-bg: #fffbeb;
-  --badge-bronze-text: #b45309;
-  --badge-silver-border: #cbd5e1;
-  --badge-silver-bg: #f8fafc;
+  --badge-bronze-border: #FDE68A;
+  --badge-bronze-bg: #FFFBEB;
+  --badge-bronze-text: #B45309;
+  --badge-silver-border: #CBD5E1;
+  --badge-silver-bg: #F8FAFC;
   --badge-silver-text: #475569;
-  --badge-gold-border: #fcd34d;
-  --badge-gold-bg: #fefce8;
-  --badge-gold-text: #d97706;
-  --badge-platinum-border: #ddd6fe;
-  --badge-platinum-bg: #f5f3ff;
-  --badge-platinum-text: #7c3aed;
+  --badge-gold-border: #FCD34D;
+  --badge-gold-bg: #FEFCE8;
+  --badge-gold-text: #D97706;
+  --badge-platinum-border: #0B2A63;
+  --badge-platinum-bg: #F0F4FA;
+  --badge-platinum-text: #0B2A63;
 
   /* Roadmap Accents */
-  --roadmap-accent: #0284c7;
-  --roadmap-accent-bg: #e0f2fe;
-  --roadmap-success: #16a34a;
-  --roadmap-success-bg: #dcfce7;
-  --roadmap-warning: #d97706;
-  --roadmap-warning-bg: #fef3c7;
+  --roadmap-accent: #0B2A63;
+  --roadmap-accent-bg: #F0F4FA;
+  --roadmap-success: #15803D;
+  --roadmap-success-bg: #DCFCE7;
+  --roadmap-warning: #D97706;
+  --roadmap-warning-bg: #FEF3C7;
 
   /* Tone Semantics for Gap Analysis */
-  --tone-met-bg: #dcfce7;
-  --tone-met-text: #15803d;
-  --tone-met-border: #86efac;
+  --tone-met-bg: #DCFCE7;
+  --tone-met-text: #14532D;
+  --tone-met-border: #86EFAC;
 
-  --tone-partial-bg: #fef9c3;
-  --tone-partial-text: #a16207;
-  --tone-partial-border: #fde047;
+  --tone-partial-bg: #FEF9C3;
+  --tone-partial-text: #A16207;
+  --tone-partial-border: #FDE047;
 
-  --tone-gap-bg: #fee2e2;
-  --tone-gap-text: #dc2626;
-  --tone-gap-border: #fca5a5;
+  --tone-gap-bg: #FEE2E2;
+  --tone-gap-text: #D32F2F;
+  --tone-gap-border: #FCA5A5;
 
-  --tone-unassessed-bg: #f1f5f9;
+  --tone-unassessed-bg: #F1F5F9;
   --tone-unassessed-text: #475569;
-  --tone-unassessed-border: #cbd5e1;
+  --tone-unassessed-border: #CBD5E1;
 
-  --tone-brand-bg: #e0e7ff;
-  --tone-brand-text: #4338ca;
-  --tone-brand-border: #a5b4fc;
+  --tone-brand-bg: #F0F4FA;
+  --tone-brand-text: #0B2A63;
+  --tone-brand-border: #99B2D8;
 
   /* Spacing Tokens */
   --spacing-xs: 0.25rem;
@@ -132,8 +141,8 @@
   /* Transitions & Shadows */
   --transition-fast: 0.15s ease;
   --transition-default: 0.2s ease-in-out;
-  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 1px 3px rgba(11, 42, 99, 0.06), 0 1px 2px rgba(11, 42, 99, 0.04);
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(11, 42, 99, 0.1), 0 2px 4px -2px rgba(11, 42, 99, 0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(11, 42, 99, 0.1), 0 4px 6px -4px rgba(11, 42, 99, 0.06);
 }
