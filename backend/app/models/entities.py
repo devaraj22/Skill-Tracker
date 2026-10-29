@@ -12,7 +12,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 from app.models.enums import (
     AchievementType, CertStatus, GoalStatus, PlacementCategory, Priority,
-    ProjectStatus, Role, SkillCategory, SkillLevel,
+    ProjectStatus, Role, SchoolGroup, SkillCategory, SkillLevel, StaffRole,
 )
 
 
@@ -69,7 +69,10 @@ class StudentProfile(TimestampMixin, Base):
     user_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False)
     full_name: Mapped[str] = mapped_column(String(120), nullable=False)
     register_number: Mapped[str | None] = mapped_column(String(40), unique=True, nullable=True)
+    # Legacy free-text field — kept until all records are migrated to department_id.
     department: Mapped[str | None] = mapped_column(String(100), index=True)
+    # Structured FK — introduced in migration 0002.
+    department_id: Mapped[uuid.UUID | None] = mapped_column(Uuid, ForeignKey("departments.id", ondelete="SET NULL"), nullable=True, index=True)
     year_of_study: Mapped[int | None] = mapped_column(Integer, index=True)
     avatar_url: Mapped[str | None] = mapped_column(String(500))
     bio: Mapped[str | None] = mapped_column(String(600))
@@ -81,6 +84,7 @@ class StudentProfile(TimestampMixin, Base):
     portfolio_sections: Mapped[list] = mapped_column(
         JSON, default=lambda: ["skills", "projects", "certifications", "achievements"], nullable=False)
     user: Mapped[User] = relationship(back_populates="profile")
+    dept: Mapped["Department | None"] = relationship(foreign_keys=[department_id], back_populates="students")
 
 
 class Skill(TimestampMixin, Base):
@@ -224,3 +228,84 @@ class ActivityLog(Base):
     summary: Mapped[str | None] = mapped_column(String(200))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     actor: Mapped[User | None] = relationship(foreign_keys=[actor_id])
+
+
+# ── New tables added in migration 0002 ──────────────────────────────────────
+
+class Department(TimestampMixin, Base):
+    """One row per academic department; admin-managed, never hardcoded."""
+    __tablename__ = "departments"
+    id: Mapped[uuid.UUID] = uuid_pk()
+    code: Mapped[str] = mapped_column(String(20), unique=True, nullable=False, index=True)
+    name: Mapped[str] = mapped_column(String(120), nullable=False)
+    school_group: Mapped[SchoolGroup] = enum_col(SchoolGroup, nullable=False, index=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    staff_assignments: Mapped[list["DepartmentStaffAssignment"]] = relationship(
+        back_populates="department", cascade="all, delete-orphan", passive_deletes=True)
+    skill_requirements: Mapped[list["DepartmentSkillRequirement"]] = relationship(
+        back_populates="department", cascade="all, delete-orphan", passive_deletes=True)
+    students: Mapped[list[StudentProfile]] = relationship(
+        foreign_keys="StudentProfile.department_id", back_populates="dept")
+
+
+class DepartmentStaffAssignment(TimestampMixin, Base):
+    """Grants a faculty or coordinator access to a specific department."""
+    __tablename__ = "department_staff_assignments"
+    __table_args__ = (
+        UniqueConstraint("user_id", "department_id", name="uq_staff_dept"),
+    )
+    id: Mapped[uuid.UUID] = uuid_pk()
+    user_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    department_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("departments.id", ondelete="CASCADE"), nullable=False, index=True)
+    assignment_role: Mapped[StaffRole] = enum_col(StaffRole, nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    user: Mapped[User] = relationship(foreign_keys=[user_id])
+    department: Mapped[Department] = relationship(back_populates="staff_assignments")
+
+
+class DepartmentSkillRequirement(TimestampMixin, Base):
+    """Defines the expected skill level for a department/year combination."""
+    __tablename__ = "department_skill_requirements"
+    __table_args__ = (
+        CheckConstraint("weight > 0", name="weight_positive"),
+        CheckConstraint("study_year IS NULL OR (study_year BETWEEN 1 AND 6)", name="req_year_range"),
+    )
+    id: Mapped[uuid.UUID] = uuid_pk()
+    department_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("departments.id", ondelete="CASCADE"), nullable=False, index=True)
+    skill_name: Mapped[str] = mapped_column(String(80), nullable=False)
+    category: Mapped[SkillCategory] = enum_col(SkillCategory, nullable=False, index=True)
+    target_level: Mapped[SkillLevel] = enum_col(SkillLevel, nullable=False)
+    study_year: Mapped[int | None] = mapped_column(Integer, nullable=True)  # NULL = applies to all years
+    weight: Mapped[float] = mapped_column(Float, default=1.0, nullable=False)
+    is_required: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    department: Mapped[Department] = relationship(back_populates="skill_requirements")
+
+
+class SkillAssessment(TimestampMixin, Base):
+    """A verified, assessed skill score — distinct from self-reported Skill rows."""
+    __tablename__ = "skill_assessments"
+    __table_args__ = (
+        CheckConstraint("score >= 0", name="sa_score_nonneg"),
+        CheckConstraint("max_score > 0", name="sa_max_positive"),
+        CheckConstraint("score <= max_score", name="sa_score_le_max"),
+        Index("ix_skill_assessments_user_skill", "user_id", "skill_name"),
+    )
+    id: Mapped[uuid.UUID] = uuid_pk()
+    user_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    skill_name: Mapped[str] = mapped_column(String(80), nullable=False)
+    category: Mapped[SkillCategory] = enum_col(SkillCategory, nullable=False, index=True)
+    score: Mapped[float] = mapped_column(Float, nullable=False)
+    max_score: Mapped[float] = mapped_column(Float, nullable=False)
+    assessed_by_id: Mapped[uuid.UUID | None] = mapped_column(Uuid, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    assessed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    feedback: Mapped[str | None] = mapped_column(String(2000))
+
+    user: Mapped[User] = relationship(foreign_keys=[user_id])
+    assessed_by: Mapped[User | None] = relationship(foreign_keys=[assessed_by_id])
+
+    @property
+    def percent(self) -> float:
+        return round(self.score / self.max_score * 100, 1)

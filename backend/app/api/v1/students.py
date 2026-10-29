@@ -2,10 +2,11 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 
 from app.api.deps import DB, Student
-from app.models import StudentProfile, User
+from app.models import Department, StudentProfile, User
 from app.schemas.profile import ProfileOut, ProfileUpdate
 from app.services.activity import log_activity
 from app.services.dashboard import profile_completion
+from app.services.skill_gap import compute_skill_gaps
 
 router = APIRouter(prefix="/students", tags=["students"])
 
@@ -15,6 +16,11 @@ NON_NULLABLE = {"full_name", "portfolio_public", "portfolio_sections"}
 def profile_out(user: User) -> ProfileOut:
     p = user.profile
     data = {c.name: getattr(p, c.name) for c in StudentProfile.__table__.columns}
+    dept_name = p.dept.name if p.dept else p.department
+    dept_code = p.dept.code if p.dept else None
+    data["department"] = dept_name
+    data["department_id"] = p.department_id
+    data["department_code"] = dept_code
     return ProfileOut(**data, email=user.email, completion_percent=profile_completion(p))
 
 
@@ -39,6 +45,16 @@ def update_my_profile(body: ProfileUpdate, user: Student, db: DB):
         select(StudentProfile.id).where(StudentProfile.portfolio_username == data["portfolio_username"], StudentProfile.id != p.id)
     ):
         raise HTTPException(status.HTTP_409_CONFLICT, "This portfolio username is already taken")
+    if "department_id" in data:
+        dept_id = data.pop("department_id")
+        if dept_id is not None:
+            dept = db.get(Department, dept_id)
+            if dept is None or not dept.is_active:
+                raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Selected department does not exist or is inactive")
+            p.department_id = dept.id
+            p.department = dept.name
+        else:
+            p.department_id = None
     if "portfolio_sections" in data:
         data["portfolio_sections"] = list(dict.fromkeys(data["portfolio_sections"]))
     for k, v in data.items():
@@ -49,3 +65,13 @@ def update_my_profile(body: ProfileUpdate, user: Student, db: DB):
     db.commit()
     db.refresh(user)
     return profile_out(user)
+
+
+@router.get("/me/skill-gaps")
+def my_skill_gaps(user: Student, db: DB) -> dict:
+    """
+    Return the calling student's skill-gap report based on their department's
+    requirements.  If the student is not yet assigned to a department, a
+    descriptive message is returned rather than an error.
+    """
+    return compute_skill_gaps(db, user.id)

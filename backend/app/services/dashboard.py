@@ -43,6 +43,10 @@ def student_dashboard(db: Session, user: User) -> dict:
     ).all()
     return {
         "full_name": profile.full_name if profile else user.email,
+        "department": (profile.dept.name if profile.dept else profile.department) if profile else None,
+        "department_code": profile.dept.code if (profile and profile.dept) else None,
+        "year_of_study": profile.year_of_study if profile else None,
+        "register_number": profile.register_number if profile else None,
         "profile_completion": profile_completion(profile),
         "skills_count": _count(db, Skill, Skill.user_id == uid),
         "projects_count": _count(db, Project, Project.user_id == uid),

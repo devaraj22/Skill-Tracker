@@ -102,3 +102,26 @@ def test_deleting_certificate_removes_file(alice):
     before = set(os.listdir(get_settings().upload_dir))
     assert alice.delete(f"/api/v1/certifications/{c['id']}").status_code == 204
     assert len(set(os.listdir(get_settings().upload_dir))) == len(before) - 1
+
+
+def test_public_certificate_verification(alice, admin, anon):
+    c = make_cert(alice, title="SSMIET Hackathon Winner", is_public=True)
+    # Pending certificate must return 404
+    assert anon.get(f"/api/v1/certifications/verify/{c['id']}").status_code == 404
+
+    # Admin verifies certificate
+    admin.patch(f"/api/v1/admin/certifications/{c['id']}/review", json={"status": "verified", "notes": "Audited"})
+
+    # Public verification returns 200 with verified info without exposing files
+    res = anon.get(f"/api/v1/certifications/verify/{c['id']}")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["title"] == "SSMIET Hackathon Winner"
+    assert data["student_name"] == "Alice Demo"
+    assert data["is_verified"] is True
+    assert "file_key" not in data
+
+    # Private certificate returns 404
+    alice.patch(f"/api/v1/certifications/{c['id']}", json={"is_public": False})
+    assert anon.get(f"/api/v1/certifications/verify/{c['id']}").status_code == 404
+

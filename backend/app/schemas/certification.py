@@ -52,7 +52,25 @@ class CertificationOut(ORMModel):
 class AdminCertificationOut(CertificationOut):
     student_id: uuid.UUID
     student_name: str
-    reviewer_name: str | None
+    student_register_number: str | None = None
+    student_department: str | None = None
+    student_year: int | None = None
+    file_mime: str | None = None
+    reviewer_name: str | None = None
+
+
+class PublicVerificationOut(ORMModel):
+    id: uuid.UUID
+    title: str
+    issuer: str
+    issue_date: date
+    expiry_date: date | None
+    credential_url: str | None
+    status: CertStatus
+    is_verified: bool
+    student_name: str
+    department: str | None
+    verified_at: datetime | None
 
 
 class ReviewIn(StrictIn):
@@ -64,3 +82,4 @@ class ReviewIn(StrictIn):
         if self.status == CertStatus.pending:
             raise ValueError("A review must set the status to verified or rejected")
         return self
+

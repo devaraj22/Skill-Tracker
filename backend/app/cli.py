@@ -17,10 +17,23 @@ from sqlalchemy.exc import IntegrityError
 from app.core.config import get_settings
 from app.core.security import hash_password
 from app.db.session import session_factory
-from app.models import Achievement, Certification, LearningGoal, PlacementAssessment, Project, Skill, StudentProfile, User
-from app.models.enums import (AchievementType, GoalStatus, PlacementCategory, Priority, ProjectStatus, Role, SkillCategory, SkillLevel)
+from app.models import Achievement, Certification, Department, LearningGoal, PlacementAssessment, Project, Skill, StudentProfile, User
+from app.models.enums import (AchievementType, GoalStatus, PlacementCategory, Priority, ProjectStatus, Role, SchoolGroup, SkillCategory, SkillLevel)
 
 DEV_PASSWORD = "DevPassword123"
+
+OFFICIAL_SSMIET_DEPARTMENTS = [
+    {"code": "CSE", "name": "Computer Science and Engineering", "school_group": SchoolGroup.soc},
+    {"code": "AIDS", "name": "Artificial Intelligence and Data Science", "school_group": SchoolGroup.soc},
+    {"code": "AIML", "name": "Computer Science and Engineering (AI & ML)", "school_group": SchoolGroup.soc},
+    {"code": "IT", "name": "Information Technology", "school_group": SchoolGroup.soc},
+    {"code": "CSBS", "name": "Computer Science and Business Systems", "school_group": SchoolGroup.soc},
+    {"code": "CS", "name": "Computer Science and Engineering (Cyber Security)", "school_group": SchoolGroup.soc},
+    {"code": "ECE", "name": "Electronics and Communication Engineering", "school_group": SchoolGroup.non_soc},
+    {"code": "EEE", "name": "Electrical and Electronics Engineering", "school_group": SchoolGroup.non_soc},
+    {"code": "MECH", "name": "Mechanical Engineering", "school_group": SchoolGroup.non_soc},
+    {"code": "CIVIL", "name": "Civil Engineering", "school_group": SchoolGroup.non_soc},
+]
 
 
 def _valid_password(pw: str) -> bool:
@@ -107,7 +120,6 @@ def seed_dev(args) -> int:
         if db.scalar(select(User.id).where(User.email == people[0][1])):
             print("Demo data already present; nothing to do.")
             return 0
-        admin = db.scalar(select(User).where(User.role == Role.admin))
         for i, (name, email, reg, dept, year, username) in enumerate(people):
             u = User(email=email, password_hash=hash_password(DEV_PASSWORD), role=Role.student)
             u.profile = StudentProfile(full_name=name, register_number=reg, department=dept, year_of_study=year,
@@ -137,6 +149,32 @@ def seed_dev(args) -> int:
     return 0
 
 
+def seed_departments(args) -> int:
+    created = 0
+    updated = 0
+    with session_factory()() as db:
+        for item in OFFICIAL_SSMIET_DEPARTMENTS:
+            existing = db.scalar(select(Department).where(Department.code == item["code"]))
+            if not existing:
+                existing_by_name = db.scalar(select(Department).where(Department.name == item["name"]))
+                if existing_by_name:
+                    existing_by_name.code = item["code"]
+                    existing_by_name.school_group = item["school_group"]
+                    existing_by_name.is_active = True
+                    updated += 1
+                else:
+                    db.add(Department(code=item["code"], name=item["name"], school_group=item["school_group"], is_active=True))
+                    created += 1
+            else:
+                existing.name = item["name"]
+                existing.school_group = item["school_group"]
+                existing.is_active = True
+                updated += 1
+        db.commit()
+    print(f"SSMIET departments successfully synced ({created} created, {updated} updated).")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog="python -m app.cli")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -148,6 +186,8 @@ def main() -> int:
     r.set_defaults(func=reset_password)
     s = sub.add_parser("seed-dev", help="Insert clearly fictional development data")
     s.set_defaults(func=seed_dev)
+    d = sub.add_parser("seed-departments", help="Sync official SSMIET departments")
+    d.set_defaults(func=seed_departments)
     args = parser.parse_args()
     return args.func(args)
 

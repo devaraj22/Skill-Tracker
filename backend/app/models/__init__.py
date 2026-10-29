@@ -1,4 +1,5 @@
 from app.models.entities import (  # noqa: F401
-    Achievement, ActivityLog, Certification, LearningGoal, PlacementAssessment,
-    Project, Skill, StudentProfile, User,
+    Achievement, ActivityLog, Certification, Department, DepartmentSkillRequirement,
+    DepartmentStaffAssignment, LearningGoal, PlacementAssessment,
+    Project, Skill, SkillAssessment, StudentProfile, User,
 )

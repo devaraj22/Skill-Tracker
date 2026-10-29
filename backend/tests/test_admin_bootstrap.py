@@ -1,12 +1,11 @@
 """Tests for administrator account bootstrapping and role-based authentication."""
-import pytest
 from sqlalchemy import select
 
 from app.core.security import verify_password
 from app.models import User
 from app.models.enums import Role
 from scripts.create_admin import create_admin
-from tests.conftest import PASSWORD, log_in, sign_up
+from tests.conftest import log_in
 
 
 def test_bootstrap_creates_initial_admin(db):

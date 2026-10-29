@@ -17,6 +17,8 @@ class ProfileOut(ORMModel):
     full_name: str
     register_number: str | None
     department: str | None
+    department_id: uuid.UUID | None = None
+    department_code: str | None = None
     year_of_study: int | None
     avatar_url: str | None
     bio: str | None
@@ -34,6 +36,7 @@ class ProfileUpdate(StrictIn):
     full_name: str | None = Field(default=None, min_length=2, max_length=120)
     register_number: str | None = Field(default=None, max_length=40, pattern=r"^[A-Za-z0-9/_-]+$")
     department: OptText = Field(default=None, max_length=100)
+    department_id: uuid.UUID | None = None
     year_of_study: int | None = Field(default=None, ge=1, le=6)
     avatar_url: OptUrl = None
     bio: OptText = Field(default=None, max_length=600)

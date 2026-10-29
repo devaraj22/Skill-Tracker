@@ -5,13 +5,12 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from fastapi.responses import FileResponse
 from sqlalchemy import or_, select
-from sqlalchemy.orm import aliased
 
 from app.api.deps import Admin, DB
 from app.api.v1.certifications import certificate_file_response
-from app.models import ActivityLog, Certification, LearningGoal, Skill, StudentProfile, User, Project, Achievement
+from app.models import ActivityLog, Certification, Department, LearningGoal, Skill, StudentProfile, User, Project, Achievement
 from app.models.enums import CertStatus, Role
-from app.repositories.common import PageParams, get_owned_or_404, like_pattern, ordering, paginate
+from app.repositories.common import PageParams, like_pattern, ordering, paginate
 from app.schemas.admin import AcademicUpdate, ActivityLogOut, AdminStudentDetail, AdminStudentOut, StatusIn
 from app.schemas.certification import AdminCertificationOut, CertificationOut, ReviewIn
 from app.schemas.common import Page
@@ -29,8 +28,14 @@ STUDENT_SORTS = {
 
 def _student_row(user: User) -> dict:
     p = user.profile
-    return {"id": user.id, "email": user.email, "full_name": p.full_name, "register_number": p.register_number,
-            "department": p.department, "year_of_study": p.year_of_study, "is_active": user.is_active, "created_at": user.created_at}
+    return {
+        "id": user.id, "email": user.email, "full_name": p.full_name,
+        "register_number": p.register_number,
+        "department": p.dept.name if p.dept else p.department,
+        "department_id": p.department_id,
+        "year_of_study": p.year_of_study,
+        "is_active": user.is_active, "created_at": user.created_at,
+    }
 
 
 def _get_student(db, student_id: uuid.UUID) -> User:
@@ -119,9 +124,15 @@ def update_student_academics(student_id: uuid.UUID, body: AcademicUpdate, admin:
 
 
 def _cert_row(c: Certification) -> AdminCertificationOut:
+    p = c.user.profile if c.user else None
     out = AdminCertificationOut.model_validate({
         **CertificationOut.model_validate(c).model_dump(),
-        "student_id": c.user_id, "student_name": c.user.profile.full_name,
+        "student_id": c.user_id,
+        "student_name": p.full_name if p else (c.user.email if c.user else "Unknown"),
+        "student_register_number": p.register_number if p else None,
+        "student_department": (p.dept.name if p.dept else p.department) if p else None,
+        "student_year": p.year_of_study if p else None,
+        "file_mime": c.file_mime,
         "reviewer_name": c.reviewer.profile.full_name if c.reviewer and c.reviewer.profile else (c.reviewer.email if c.reviewer else None),
     })
     return out
@@ -131,14 +142,26 @@ def _cert_row(c: Certification) -> AdminCertificationOut:
 def certification_queue(
     _: Admin, db: DB, params: Annotated[PageParams, Depends()],
     status_: CertStatus | None = Query(None, alias="status"), q: str | None = Query(None, max_length=80),
+    department: str | None = Query(None, max_length=100),
     order: Literal["asc", "desc"] = "asc",
 ):
     stmt = select(Certification).join(StudentProfile, StudentProfile.user_id == Certification.user_id)
     if status_:
         stmt = stmt.where(Certification.status == status_)
+    if department:
+        stmt = stmt.where(or_(
+            StudentProfile.department == department,
+            StudentProfile.dept.has(Department.name == department),
+            StudentProfile.dept.has(Department.code == department),
+        ))
     if q:
         pat = like_pattern(q)
-        stmt = stmt.where(or_(Certification.title.ilike(pat, escape="\\"), Certification.issuer.ilike(pat, escape="\\"), StudentProfile.full_name.ilike(pat, escape="\\")))
+        stmt = stmt.where(or_(
+            Certification.title.ilike(pat, escape="\\"),
+            Certification.issuer.ilike(pat, escape="\\"),
+            StudentProfile.full_name.ilike(pat, escape="\\"),
+            StudentProfile.register_number.ilike(pat, escape="\\"),
+        ))
     col = Certification.created_at
     items, total = paginate(db, stmt.order_by(col.asc() if order == "asc" else col.desc(), Certification.id), params)
     return Page(items=[_cert_row(c) for c in items], total=total, page=params.page, page_size=params.page_size)

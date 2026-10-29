@@ -1,7 +1,7 @@
 import csv
 import io
 
-from tests.conftest import log_in, sign_up
+from tests.conftest import sign_up
 
 
 def test_analytics_on_empty_database(admin):

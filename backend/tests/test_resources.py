@@ -49,8 +49,8 @@ def test_get_single_skill_and_project_are_owner_only(alice, bob):
 
 
 def test_skill_search_filter_sort_and_duplicates(alice):
-    for n, c, l in [("Python", "programming", "expert"), ("React", "web", "beginner"), ("Postgres", "databases", "advanced")]:
-        alice.post("/api/v1/skills", json={"name": n, "category": c, "level": l})
+    for name, cat, lvl in [("Python", "programming", "expert"), ("React", "web", "beginner"), ("Postgres", "databases", "advanced")]:
+        alice.post("/api/v1/skills", json={"name": name, "category": cat, "level": lvl})
     assert alice.post("/api/v1/skills", json={"name": "python", "category": "programming", "level": "beginner"}).status_code == 409
     assert [s["name"] for s in alice.get("/api/v1/skills?q=post").json()["items"]] == ["Postgres"]
     assert [s["name"] for s in alice.get("/api/v1/skills?category=web").json()["items"]] == ["React"]

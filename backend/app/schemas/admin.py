@@ -13,6 +13,7 @@ class AdminStudentOut(ORMModel):
     full_name: str
     register_number: str | None
     department: str | None
+    department_id: uuid.UUID | None = None
     year_of_study: int | None
     is_active: bool
     created_at: datetime
@@ -25,6 +26,7 @@ class StatusIn(StrictIn):
 class AcademicUpdate(StrictIn):
     register_number: str | None = Field(default=None, max_length=40, pattern=r"^[A-Za-z0-9/_-]+$")
     department: str | None = Field(default=None, max_length=100)
+    department_id: uuid.UUID | None = None
     year_of_study: int | None = Field(default=None, ge=1, le=6)
 
 

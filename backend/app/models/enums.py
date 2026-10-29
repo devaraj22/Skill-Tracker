@@ -4,6 +4,18 @@ import enum
 class Role(str, enum.Enum):
     student = "student"
     admin = "admin"
+    faculty = "faculty"
+    coordinator = "coordinator"
+
+
+class SchoolGroup(str, enum.Enum):
+    soc = "soc"
+    non_soc = "non_soc"
+
+
+class StaffRole(str, enum.Enum):
+    faculty = "faculty"
+    coordinator = "coordinator"
 
 
 class SkillCategory(str, enum.Enum):

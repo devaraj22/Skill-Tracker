@@ -9,7 +9,7 @@ from app.api.deps import DB, Student
 from app.models import Certification
 from app.models.enums import CertStatus
 from app.repositories.common import PageParams, apply_update, get_owned_or_404, like_pattern, ordering, paginate
-from app.schemas.certification import CertificationCreate, CertificationOut, CertificationUpdate
+from app.schemas.certification import CertificationCreate, CertificationOut, CertificationUpdate, PublicVerificationOut
 from app.schemas.common import Page
 from app.services import files
 from app.services.activity import log_activity
@@ -26,6 +26,32 @@ def reset_review(cert: Certification) -> None:
     cert.reviewed_by_id = None
     cert.reviewed_at = None
     cert.review_notes = None
+
+
+@router.get("/verify/{cert_id}", response_model=PublicVerificationOut)
+def verify_public_certificate(cert_id: uuid.UUID, db: DB):
+    """Safe public certificate verification lookup."""
+    cert = db.get(Certification, cert_id)
+    if cert is None or cert.status != CertStatus.verified or not cert.is_public:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Certificate not found or not published for public verification")
+    user = cert.user
+    if user is None or not user.is_active or user.profile is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Certificate not found or not published for public verification")
+    p = user.profile
+    dept_name = p.dept.name if p.dept else p.department
+    return PublicVerificationOut(
+        id=cert.id,
+        title=cert.title,
+        issuer=cert.issuer,
+        issue_date=cert.issue_date,
+        expiry_date=cert.expiry_date,
+        credential_url=cert.credential_url,
+        status=cert.status,
+        is_verified=True,
+        student_name=p.full_name,
+        department=dept_name,
+        verified_at=cert.reviewed_at,
+    )
 
 
 @router.get("", response_model=Page[CertificationOut])
