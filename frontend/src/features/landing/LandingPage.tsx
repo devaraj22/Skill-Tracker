@@ -293,7 +293,7 @@ export function LandingPage() {
               {/* Headline */}
               <div>
                 <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#0B2A63] leading-[1.18]">
-                  SkillTrack: Institutional Intelligence &amp; Placement Readiness
+                  Student Skill and Certification Management System
                 </h1>
                 <p className="mt-2 text-sm sm:text-base text-slate-600 max-w-2xl leading-relaxed">
                   The official skill management and competency evaluation platform for SSMIET. Track curriculum outcomes, verify real certificates under faculty review, and map student proficiency to premier industry placements.
@@ -819,7 +819,7 @@ export function LandingPage() {
               </div>
             </div>
             <p className="text-slate-300 leading-relaxed text-xs">
-              Student Skill Intelligence, Certificate Verification &amp; Placement Readiness Platform for SSM Institute of Engineering and Technology.
+              Student Skill and Certification Management System for SSM Institute of Engineering and Technology.
             </p>
           </div>
 

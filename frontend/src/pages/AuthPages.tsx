@@ -16,9 +16,10 @@ function AuthFrame({ title, subtitle, children, footer }: { title: string; subti
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center justify-center text-center">
           <Link to="/" className="hover:opacity-95 transition-opacity inline-block mb-3">
-            <SSMLogo variant="header" showAccreditations={false} />
+            <SSMLogo variant="auth" />
+
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#0B2A63] text-white text-[11px] font-bold tracking-wide uppercase shadow-xs">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#0B2A63] text-white text-xs font-bold tracking-wide uppercase shadow-xs border-r-3 border-[#F59E0B]">
             <span>SkillTrack Platform</span>
             <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
           </div>

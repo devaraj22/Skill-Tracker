@@ -1,16 +1,38 @@
-# SkillTrack: Student Skill & Placement Management System
+# Student Skill and Certification Management System
 
-A full-stack app where **students** track skills, certificates, projects, achievements, learning goals and placement-preparation results, and publish an optional public portfolio, and **college administrators** manage accounts, verify certificates and view aggregate analytics.
+A full-stack institutional platform where **students** track skills, certificates, projects, achievements, learning goals, and placement-preparation results, and publish an optional public portfolio, and **college administrators** manage accounts, verify certificates, and view aggregate institutional analytics.
+
+[![Documentation](https://img.shields.io/badge/Documentation-Complete%20Guide%20with%20Screenshots-blue)](docs/DOCUMENTATION.md)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python%203.12-009688)](backend/)
+[![React](https://img.shields.io/badge/Frontend-React%2018%20%7C%20Vite%20%7C%20TypeScript-61DAFB)](frontend/)
+
+---
+
+## Visual Feature Highlights
+
+| Student Command Center | Skill Gap & Career Intelligence |
+|:---:|:---:|
+| ![Student Dashboard](docs/screenshots/03-student-dashboard.png) | ![Skill Gap Analysis](docs/screenshots/05-skill-gap-analysis.png) |
+
+| Institutional Admin Analytics | Certificate Verification Queue |
+|:---:|:---:|
+| ![Admin Analytics](docs/screenshots/13-admin-overview.png) | ![Verification Queue](docs/screenshots/14-admin-certifications.png) |
+
+> 📖 **[View the Complete Documentation with all 17 Screenshots & Architecture Diagrams](docs/DOCUMENTATION.md)**
+
+---
 
 * **Frontend:** React 18, TypeScript (strict), Vite, Tailwind CSS, React Router, TanStack Query, React Hook Form + Zod, Recharts, Lucide.
-* **Backend:** Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL, JWT in HttpOnly cookies, bcrypt.
+* **Backend:** Python 3.12, FastAPI, Pydantic v2, SQLAlchemy 2, Alembic, PostgreSQL / SQLite, JWT in HttpOnly cookies, bcrypt.
+* **Automation:** Pytest, Vitest, Playwright automated screenshot generator.
 * No cloud services or paid APIs.
 
 ```
 student-skill-tracker/
   backend/   FastAPI app (app/), Alembic (alembic/), tests (tests/)
   frontend/  React app (src/)
-  docs/      API.md, DATABASE.md
+  docs/      DOCUMENTATION.md, API.md, DATABASE.md, screenshots/
+  scripts/   capture_all_screenshots.py
 ```
 
 ## Prerequisites
@@ -88,11 +110,17 @@ npm run dev                          # http://localhost:5173
 
 The dev server proxies `/api` to the backend, so the browser sees one origin and cookies/CSRF work without extra setup.
 
-## Tests
+## Tests & Screenshot Automation
 
 ```powershell
-cd backend;  .\.venv\Scripts\Activate.ps1;  python -m pytest -q     # isolated in-memory SQLite
+# Backend tests
+cd backend; .\.venv\Scripts\Activate.ps1; python -m pytest -q     # isolated in-memory SQLite
+
+# Frontend tests
 cd ..\frontend; npm test
+
+# Automated UI screenshot generation (captures all 17 screens into docs/screenshots/)
+python ..\scripts\capture_all_screenshots.py
 ```
 
 To run the backend suite against PostgreSQL, create an empty database whose name contains `test` (the suite drops/recreates its tables, and refuses other names):

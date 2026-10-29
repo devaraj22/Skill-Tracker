@@ -14,7 +14,7 @@ logger = logging.getLogger("skilltrack")
 
 def create_app() -> FastAPI:
     settings = get_settings()
-    app = FastAPI(title="SkillTrack API", version="1.0.0", description="Student Skill & Placement Management System")
+    app = FastAPI(title="Student Skill and Certification Management System API", version="1.0.0", description="Student Skill and Certification Management System")
 
     app.add_middleware(
         CORSMiddleware, allow_origins=settings.cors_origin_list, allow_credentials=True,
