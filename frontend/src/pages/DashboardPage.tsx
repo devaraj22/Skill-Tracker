@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { BarCard } from "@/components/charts";
 import { Badge, Card, DataState, PageHeader, ProgressBar, Skeleton, StatCard } from "@/components/ui";
 import { PlacementSummaryView } from "@/features/placement/PlacementPage";
+import { ActivityHeatmap } from "@/components/activity/ActivityHeatmap";
+import { BadgesShowcase } from "@/components/activity/BadgesShowcase";
 import { api } from "@/lib/api";
 import { SKILL_CATEGORIES, formatDate, label } from "@/lib/constants";
-import type { Dashboard } from "@/types";
+import type { Dashboard, GamificationSummary } from "@/types";
 
 const ACTIONS: Record<string, string> = {
   "skill.created": "Added skill", "skill.updated": "Updated skill", "skill.deleted": "Deleted skill", "project.created": "Added project", "project.updated": "Updated project",
@@ -19,11 +21,38 @@ const Loading = () => <div className="space-y-4"><Skeleton className="h-10 w-72"
 
 export function DashboardPage() {
   const query = useQuery({ queryKey: ["dashboard"], queryFn: () => api.get<Dashboard>("/dashboard") });
+  const gamificationQuery = useQuery({
+    queryKey: ["gamification-summary"],
+    queryFn: () => api.get<GamificationSummary>("/gamification/summary"),
+  });
   return (
     <DataState query={query} skeleton={<Loading />}>
       {(d) => (
         <>
-          <PageHeader title={`Welcome, ${d.full_name.split(" ")[0]}`} description="Here is where your profile and preparation stand today." />
+          <PageHeader title={`Welcome, ${d.full_name.split(" ")[0]}`} description="SSMIET Student Skill Intelligence & Placement Readiness Portal." />
+          
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-navy-50 font-bold text-navy-900 border border-navy-200/80 text-sm">
+                {d.department_code || "SSM"}
+              </div>
+              <div>
+                <div className="text-sm font-semibold text-slate-900">
+                  {d.department || "Department not yet selected"}
+                </div>
+                <div className="text-xs text-slate-500">
+                  {d.year_of_study ? `Year ${d.year_of_study} Engineering` : "Year not specified"}
+                  {d.register_number ? ` · Reg: ${d.register_number}` : ""} · SSM Institute of Engineering and Technology
+                </div>
+              </div>
+            </div>
+            {!d.department && (
+              <Link to="/profile" className="text-xs font-semibold text-navy-900 hover:text-amber-600">
+                Select Department →
+              </Link>
+            )}
+          </div>
+
           <Card className="mb-4">
             <div className="mb-2 flex items-center justify-between text-sm"><span className="font-medium">Profile completion</span><span className="tabular-nums">{d.profile_completion}%</span></div>
             <ProgressBar value={d.profile_completion} label="Profile completion" />
@@ -57,6 +86,17 @@ export function DashboardPage() {
             {d.skill_distribution.length === 0 ? <Card><h2 className="mb-2 font-medium">Skill distribution</h2><p className="text-sm text-ink-soft">Add skills to see how they are spread across categories. <Link to="/skills" className="font-medium text-brand-600">Add a skill</Link>.</p></Card>
               : <BarCard title="Skill distribution" horizontal height={Math.max(160, d.skill_distribution.length * 36)} xKey="name" yKey="count" data={d.skill_distribution.map((s) => ({ name: label(SKILL_CATEGORIES, s.category), count: s.count }))} />}
           </div>
+
+          {gamificationQuery.data?.heatmap?.daily_counts && (
+            <div className="mt-6">
+              <ActivityHeatmap data={gamificationQuery.data.heatmap} />
+            </div>
+          )}
+          {gamificationQuery.data?.badges?.badges && (
+            <div className="mt-6">
+              <BadgesShowcase data={gamificationQuery.data.badges} />
+            </div>
+          )}
 
           <h2 className="mb-3 mt-8 text-lg font-semibold">Placement preparation</h2>
           <PlacementSummaryView s={d.placement} />

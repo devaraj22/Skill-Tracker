@@ -5,10 +5,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useParams } from "react-router-dom";
 import { Badge, Button, Card, CheckField, DataState, ErrorState, ExtLink, PageHeader, Skeleton, TextField, useToast } from "@/components/ui";
+import { ActivityHeatmap } from "@/components/activity/ActivityHeatmap";
+import { BadgesShowcase } from "@/components/activity/BadgesShowcase";
 import { ApiError, api } from "@/lib/api";
 import { ACHIEVEMENT_KINDS, PORTFOLIO_SECTIONS, SKILL_CATEGORIES, SKILL_LEVELS, formatDate, label } from "@/lib/constants";
 import { portfolioSchema } from "@/schemas";
-import type { Profile, PublicPortfolio } from "@/types";
+import type { GamificationSummary, Profile, PublicPortfolio } from "@/types";
 
 type Values = { portfolio_username: string; portfolio_public: boolean; portfolio_sections: string[] };
 
@@ -57,6 +59,11 @@ export function PortfolioEditorPage() {
 export function PublicPortfolioPage() {
   const { username = "" } = useParams();
   const q = useQuery({ queryKey: ["portfolio", username], queryFn: () => api.get<PublicPortfolio>(`/portfolio/${encodeURIComponent(username)}`), retry: false });
+  const gamificationQuery = useQuery({
+    queryKey: ["portfolio-gamification", username],
+    queryFn: () => api.get<GamificationSummary>(`/gamification/public/${encodeURIComponent(username)}`),
+    retry: false,
+  });
 
   if (q.isLoading) return <main className="mx-auto max-w-4xl p-6" aria-busy="true"><Skeleton className="h-32" /><span className="sr-only">Loading portfolio</span></main>;
   if (q.error instanceof ApiError && q.error.status === 404) {
@@ -111,6 +118,16 @@ export function PublicPortfolioPage() {
             <ul className="space-y-3">{p.achievements.map((a) => (
               <li key={a.title + a.achieved_on}><h3 className="font-medium">{a.title} <Badge>{label(ACHIEVEMENT_KINDS, a.kind)}</Badge></h3>
                 <p className="text-sm text-ink-soft">{a.organization} · {formatDate(a.achieved_on)}{a.result && ` · ${a.result}`}</p>{a.description && <p className="mt-1 text-sm">{a.description}</p>}</li>))}</ul></section>
+        )}
+        {gamificationQuery.data?.badges?.badges && (
+          <section aria-labelledby="portfolio-badges-h">
+            <BadgesShowcase data={gamificationQuery.data.badges} title="Earned Badges & Milestones" />
+          </section>
+        )}
+        {gamificationQuery.data?.heatmap?.daily_counts && (
+          <section aria-labelledby="portfolio-activity-h">
+            <ActivityHeatmap data={gamificationQuery.data.heatmap} title="Contribution & Learning Activity" />
+          </section>
         )}
         {!p.skills.length && !p.projects.length && !p.certifications.length && !p.achievements.length && <p className="text-ink-soft">This student has not published any items yet.</p>}
       </main>

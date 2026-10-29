@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Download } from "lucide-react";
+import { Building2, Download, Eye } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FormDialog } from "@/components/FormDialog";
@@ -10,6 +10,7 @@ import { useList } from "@/hooks/useResource";
 import { api } from "@/lib/api";
 import { CERT_STATUS, GOAL_STATUS, SKILL_CATEGORIES, SKILL_LEVELS, formatDate, label, options } from "@/lib/constants";
 import { z } from "zod";
+import { DocumentPreviewModal } from "./DocumentPreviewModal";
 import type { ActivityLogEntry, AdminAnalytics, AdminCertification, AdminStudent, AdminStudentDetail } from "@/types";
 
 const Table = ({ caption, heads, children }: { caption: string; heads: string[]; children: React.ReactNode }) => (
@@ -27,7 +28,14 @@ export function AdminOverviewPage() {
   return (
     <>
       <PageHeader title="Overview" description="Aggregates calculated from stored records."
-        actions={<Button variant="secondary" onClick={() => api.download("/admin/reports/students.csv", "students.csv").catch((e: Error) => toast("error", e.message))}><Download className="h-4 w-4" aria-hidden />Export students CSV</Button>} />
+        actions={
+          <div className="flex items-center gap-2">
+            <Link to="/admin/departments">
+              <Button variant="secondary"><Building2 className="h-4 w-4" aria-hidden />Manage departments</Button>
+            </Link>
+            <Button variant="secondary" onClick={() => api.download("/admin/reports/students.csv", "students.csv").catch((e: Error) => toast("error", e.message))}><Download className="h-4 w-4" aria-hidden />Export students CSV</Button>
+          </div>
+        } />
       <DataState query={query}>
         {(a) => (
           <div className="space-y-4">
@@ -132,21 +140,55 @@ export function AdminStudentDetailPage() {
 const reviewSchema = z.object({ status: z.enum(["verified", "rejected"], { errorMap: () => ({ message: "Choose a decision" }) }), notes: z.string().trim().max(1000, "Keep notes under 1000 characters") });
 
 export function AdminCertificationsPage() {
-  const [status, setStatus] = useState("pending"); const [q, setQ] = useState(""); const [page, setPage] = useState(1);
+  const [status, setStatus] = useState("pending");
+  const [department, setDepartment] = useState("");
+  const [q, setQ] = useState("");
+  const [page, setPage] = useState(1);
   const onSearch = useCallback((v: string) => { setQ(v); setPage(1); }, []);
-  const query = useList<AdminCertification>("/admin/certifications", { status, q, page, page_size: 10 });
-  const qc = useQueryClient(); const toast = useToast();
+
+  const analytics = useQuery({ queryKey: ["admin-analytics"], queryFn: () => api.get<AdminAnalytics>("/admin/analytics") });
+  const query = useList<AdminCertification>("/admin/certifications", { status, q, department, page, page_size: 10 });
+  const qc = useQueryClient();
+  const toast = useToast();
   const [reviewing, setReviewing] = useState<AdminCertification | null>(null);
+  const [previewDoc, setPreviewDoc] = useState<AdminCertification | null>(null);
+
   const review = useMutation({
     mutationFn: ({ id, body }: { id: string; body: unknown }) => api.patch(`/admin/certifications/${id}/review`, body),
-    onSuccess: () => { void qc.invalidateQueries({ queryKey: ["/admin/certifications"] }); void qc.invalidateQueries({ queryKey: ["admin-analytics"] }); },
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ["/admin/certifications"] });
+      void qc.invalidateQueries({ queryKey: ["admin-analytics"] });
+    },
   });
+
+  const pendingCount = analytics.data?.certifications?.pending ?? 0;
+
   return (
     <>
-      <PageHeader title="Certificate queue" description="Inspect the evidence, then mark each certificate verified or rejected. Your name and the time are recorded." />
+      <PageHeader
+        title="Certificate Verification Center"
+        description={
+          <>
+            Inspect evidence documents and record institutional audit decisions.
+            {pendingCount > 0 && (
+              <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">
+                {pendingCount} Pending Review
+              </span>
+            )}
+          </>
+        }
+      />
       <div className="mb-4 flex flex-wrap gap-2">
         <SearchInput value={q} onChange={onSearch} placeholder="Search title, issuer or student" />
         <FilterSelect label="Status" value={status} onChange={(v) => { setStatus(v); setPage(1); }} choices={options(CERT_STATUS)} />
+        <FilterSelect
+          label="Department"
+          value={department}
+          onChange={(v) => { setDepartment(v); setPage(1); }}
+          choices={(analytics.data?.by_department ?? [])
+            .filter((d) => d.department !== "Unspecified")
+            .map((d) => ({ value: d.department, label: d.department }))}
+        />
       </div>
       <DataState query={query} isEmpty={(d) => d.items.length === 0} empty={<EmptyState title={status === "pending" && !q ? "Queue is clear" : "No certificates found"} description={status === "pending" && !q ? "There are no certificates waiting for review." : "Try different filters."} />}>
         {(d) => (
@@ -154,11 +196,30 @@ export function AdminCertificationsPage() {
             <Table caption="Certificate submissions" heads={["Student", "Certificate", "Evidence", "Status", "Reviewed", "Actions"]}>
               {d.items.map((c) => (
                 <tr key={c.id} className="border-b border-slate-100 last:border-0">
-                  <td className={td}>{c.student_name}</td>
+                  <td className={td}>
+                    <div className="font-semibold text-slate-900">{c.student_name}</div>
+                    <div className="text-xs text-ink-faint">
+                      {c.student_register_number ? `Reg: ${c.student_register_number}` : ""}
+                      {c.student_department ? ` · ${c.student_department}` : ""}
+                      {c.student_year ? ` (Yr ${c.student_year})` : ""}
+                    </div>
+                  </td>
                   <td className={td}><div className="font-medium">{c.title}</div><div className="text-xs text-ink-faint">{c.issuer} · {formatDate(c.issue_date)}</div></td>
                   <td className={td}><div className="flex flex-col items-start gap-1">
                     {c.credential_url && /^https?:\/\//i.test(c.credential_url) && <a className="text-brand-600" target="_blank" rel="noopener noreferrer nofollow" href={c.credential_url}>Credential link</a>}
-                    {c.has_file ? <button className="text-brand-600 underline-offset-2 hover:underline" onClick={() => api.download(`/admin/certifications/${c.id}/file`, `certificate-${c.id.slice(0, 8)}`).catch((e: Error) => toast("error", e.message))}>Download document</button> : <span className="text-ink-faint">No document</span>}</div></td>
+                    {c.has_file ? (
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="text-indigo-600 font-semibold underline-offset-2 hover:underline inline-flex items-center gap-1"
+                          onClick={() => setPreviewDoc(c)}
+                        >
+                          <Eye className="h-3.5 w-3.5" aria-hidden />
+                          <span>Preview</span>
+                        </button>
+                        <button className="text-brand-600 underline-offset-2 hover:underline" onClick={() => api.download(`/admin/certifications/${c.id}/file`, `certificate-${c.id.slice(0, 8)}`).catch((e: Error) => toast("error", e.message))}>Download document</button>
+                      </div>
+                    ) : <span className="text-ink-faint">No document</span>}</div></td>
                   <td className={td}><Badge tone={c.status}>{label(CERT_STATUS, c.status)}</Badge></td>
                   <td className={td}>{c.reviewed_at ? <><div>{formatDate(c.reviewed_at)}</div><div className="text-xs text-ink-faint">by {c.reviewer_name ?? "unknown"}</div></> : "–"}</td>
                   <td className={td}><Button variant="secondary" onClick={() => setReviewing(c)} aria-label={`Review ${c.title} from ${c.student_name}`}>{c.status === "pending" ? "Review" : "Change decision"}</Button></td>
@@ -173,12 +234,48 @@ export function AdminCertificationsPage() {
         onSubmit={(v) => review.mutateAsync({ id: reviewing!.id, body: { status: v.status, notes: v.notes || null } })}>
         {({ register, formState: { errors } }) => (
           <>
-            <p className="text-sm text-ink-soft">Submitted by {reviewing?.student_name}.</p>
+            <div className="rounded-lg bg-slate-50 p-3 text-xs space-y-1.5 border border-slate-200">
+              <div className="flex justify-between">
+                <span className="text-slate-500 font-medium">Student:</span>
+                <span className="font-bold text-slate-900">{reviewing?.student_name}</span>
+              </div>
+              {reviewing?.student_register_number && (
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Register Number:</span>
+                  <span className="font-mono text-slate-700">{reviewing.student_register_number}</span>
+                </div>
+              )}
+              {reviewing?.student_department && (
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Department:</span>
+                  <span className="text-slate-700">{reviewing.student_department}</span>
+                </div>
+              )}
+              {reviewing?.has_file && (
+                <div className="pt-2 border-t border-slate-200 flex justify-between items-center">
+                  <span className="text-slate-500">Evidence Document:</span>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setPreviewDoc(reviewing)}
+                    className="text-xs py-1 px-2.5 h-auto inline-flex items-center gap-1"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                    <span>Preview Document</span>
+                  </Button>
+                </div>
+              )}
+            </div>
             <SelectField label="Decision" placeholder="Choose" choices={[{ value: "verified", label: "Verified" }, { value: "rejected", label: "Rejected" }]} error={errors.status as never} {...register("status")} />
-            <TextAreaField label="Review notes (optional)" hint="Visible to the student." error={errors.notes as never} {...register("notes")} />
+            <TextAreaField label="Review notes (optional)" hint="Visible to the student. Explain reason if rejecting." error={errors.notes as never} {...register("notes")} />
           </>
         )}
       </FormDialog>
+
+      <DocumentPreviewModal
+        certification={previewDoc}
+        onClose={() => setPreviewDoc(null)}
+      />
     </>
   );
 }

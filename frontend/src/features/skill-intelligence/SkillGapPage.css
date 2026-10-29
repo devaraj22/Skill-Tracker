@@ -1,0 +1,388 @@
+:root {
+  --skillgap-bg: var(--color-background);
+  --skillgap-surface: var(--color-surface);
+  --skillgap-border: var(--color-border);
+  --skillgap-border-light: var(--color-border-light);
+  --skillgap-text: var(--color-text);
+  --skillgap-text-soft: var(--color-text-soft);
+  --skillgap-text-muted: var(--color-text-muted);
+  --skillgap-radius: var(--radius-lg);
+  --skillgap-radius-sm: var(--radius-sm);
+  --skillgap-radius-full: var(--radius-full);
+}
+
+.skillgap-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Hero / Info Header ────────────────────────────────────────── */
+.skillgap-banner {
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  border: 1px solid var(--skillgap-border);
+  border-radius: var(--skillgap-radius);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.skillgap-banner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.skillgap-banner-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--skillgap-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skillgap-banner-subtitle {
+  font-size: 0.875rem;
+  color: var(--skillgap-text-soft);
+}
+
+.skillgap-banner-chips {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.skillgap-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3125rem 0.75rem;
+  border-radius: var(--skillgap-radius-full);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.skillgap-chip--dept {
+  background: var(--tone-brand-bg);
+  color: var(--tone-brand-text);
+  border-color: var(--tone-brand-border);
+}
+
+.skillgap-chip--year {
+  background: #f1f5f9;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+/* ── Summary Stats ─────────────────────────────────────────────── */
+.skillgap-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.skillgap-stat-card {
+  background: var(--skillgap-surface);
+  border: 1px solid var(--skillgap-border);
+  border-radius: var(--skillgap-radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.skillgap-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+}
+
+.skillgap-stat-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--skillgap-text-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.skillgap-stat-value {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.skillgap-stat-value--met { color: var(--tone-met-text); }
+.skillgap-stat-value--partial { color: var(--tone-partial-text); }
+.skillgap-stat-value--gap { color: var(--tone-gap-text); }
+.skillgap-stat-value--unassessed { color: var(--tone-unassessed-text); }
+
+.skillgap-stat-subtext {
+  font-size: 0.75rem;
+  color: var(--skillgap-text-muted);
+}
+
+/* ── Controls Bar ──────────────────────────────────────────────── */
+.skillgap-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--skillgap-surface);
+  border: 1px solid var(--skillgap-border);
+  border-radius: var(--skillgap-radius);
+}
+
+.skillgap-filter-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--skillgap-text-soft);
+}
+
+.skillgap-select {
+  padding: 0.4375rem 0.75rem;
+  border-radius: var(--skillgap-radius-sm);
+  border: 1px solid var(--skillgap-border);
+  background: #ffffff;
+  font-size: 0.875rem;
+  color: var(--skillgap-text);
+  outline: none;
+  cursor: pointer;
+}
+
+.skillgap-select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.skillgap-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--skillgap-text-soft);
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.skillgap-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #4f46e5;
+  cursor: pointer;
+}
+
+/* ── Gap Items List ────────────────────────────────────────────── */
+.skillgap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skillgap-card {
+  background: var(--skillgap-surface);
+  border: 1px solid var(--skillgap-border);
+  border-radius: var(--skillgap-radius);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.skillgap-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.skillgap-card--gap {
+  border-left: 4px solid var(--tone-gap-text);
+}
+
+.skillgap-card--partial {
+  border-left: 4px solid var(--tone-partial-text);
+}
+
+.skillgap-card--met {
+  border-left: 4px solid var(--tone-met-text);
+}
+
+.skillgap-card--not_assessed {
+  border-left: 4px solid var(--tone-unassessed-text);
+}
+
+.skillgap-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.skillgap-card-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.skillgap-card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.skillgap-card-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--skillgap-text);
+  margin: 0;
+}
+
+.skillgap-required-tag {
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.125rem 0.4375rem;
+  border-radius: 0.25rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.skillgap-category-text {
+  font-size: 0.8125rem;
+  color: var(--skillgap-text-muted);
+}
+
+/* ── Status and Badges ─────────────────────────────────────────── */
+.skillgap-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--skillgap-radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.skillgap-status--met {
+  background: var(--tone-met-bg);
+  color: var(--tone-met-text);
+  border: 1px solid var(--tone-met-border);
+}
+
+.skillgap-status--partial {
+  background: var(--tone-partial-bg);
+  color: var(--tone-partial-text);
+  border: 1px solid var(--tone-partial-border);
+}
+
+.skillgap-status--gap {
+  background: var(--tone-gap-bg);
+  color: var(--tone-gap-text);
+  border: 1px solid var(--tone-gap-border);
+}
+
+.skillgap-status--not_assessed {
+  background: var(--tone-unassessed-bg);
+  color: var(--tone-unassessed-text);
+  border: 1px solid var(--tone-unassessed-border);
+}
+
+/* ── Levels Comparison ─────────────────────────────────────────── */
+.skillgap-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  background: #f8fafc;
+  padding: 0.875rem 1rem;
+  border-radius: var(--skillgap-radius-sm);
+  border: 1px solid var(--skillgap-border-light);
+}
+
+.skillgap-comparison-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.skillgap-comparison-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--skillgap-text-muted);
+  text-transform: uppercase;
+}
+
+.skillgap-comparison-val {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--skillgap-text);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.skillgap-evidence-info {
+  font-size: 0.75rem;
+  color: var(--skillgap-text-soft);
+  margin-top: 0.125rem;
+}
+
+/* ── Action Box ────────────────────────────────────────────────── */
+.skillgap-action-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--skillgap-border-light);
+}
+
+.skillgap-recommendation {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--skillgap-text-soft);
+  flex: 1;
+  min-width: 250px;
+}
+
+.skillgap-recommendation-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #4f46e5;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.skillgap-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Modal styling ─────────────────────────────────────────────── */
+.skillgap-modal-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

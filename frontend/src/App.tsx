@@ -12,6 +12,10 @@ import { GoalsPage } from "@/features/learning-goals/GoalsPage";
 import { PlacementPage } from "@/features/placement/PlacementPage";
 import { PortfolioEditorPage, PublicPortfolioPage } from "@/features/portfolio/PortfolioPages";
 import { AdminOverviewPage, AdminStudentsPage, AdminStudentDetailPage, AdminCertificationsPage, AdminActivityPage } from "@/features/admin/AdminPages";
+import { DepartmentsPage } from "@/features/departments/DepartmentsPage";
+import { SkillGapPage } from "@/features/skill-intelligence/SkillGapPage";
+import { RoadmapPage } from "@/features/roadmap/RoadmapPage";
+import { LandingPage } from "@/features/landing/LandingPage";
 
 function NotFound() {
   return <main className="p-10 text-center"><h1 className="text-2xl font-semibold">Page not found</h1><p className="mt-2 text-ink-soft">The page you are looking for does not exist.</p><Link to="/" className="mt-4 inline-block font-medium text-brand-600">Go to the home page</Link></main>;
@@ -20,14 +24,18 @@ function NotFound() {
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/landing" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/portfolio/:username" element={<PublicPortfolioPage />} />
       <Route element={<ProtectedRoute role="student" />}>
         <Route element={<StudentLayout />}>
-          <Route index element={<DashboardPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="skills" element={<SkillsPage />} />
+          <Route path="skill-gap" element={<SkillGapPage />} />
+          <Route path="roadmap" element={<RoadmapPage />} />
           <Route path="certifications" element={<CertificationsPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="projects/:id" element={<ProjectDetailPage />} />
@@ -40,6 +48,7 @@ export default function App() {
       <Route element={<ProtectedRoute role="admin" />}>
         <Route path="admin" element={<AdminLayout />}>
           <Route index element={<AdminOverviewPage />} />
+          <Route path="departments" element={<DepartmentsPage />} />
           <Route path="students" element={<AdminStudentsPage />} />
           <Route path="students/:id" element={<AdminStudentDetailPage />} />
           <Route path="certifications" element={<AdminCertificationsPage />} />

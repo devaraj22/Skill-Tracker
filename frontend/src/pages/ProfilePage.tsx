@@ -2,12 +2,24 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { DepartmentSelector } from "@/components/DepartmentSelector";
 import { Button, Card, DataState, PageHeader, ProgressBar, SelectField, TextAreaField, TextField, useToast } from "@/components/ui";
 import { ApiError, api } from "@/lib/api";
 import { nullify, profileSchema } from "@/schemas";
 import type { Profile } from "@/types";
 
-type Values = { full_name: string; register_number: string; department: string; year_of_study: string; avatar_url: string; bio: string; github_url: string; linkedin_url: string; resume_url: string };
+type Values = {
+  full_name: string;
+  register_number: string;
+  department: string;
+  department_id?: string;
+  year_of_study: string;
+  avatar_url: string;
+  bio: string;
+  github_url: string;
+  linkedin_url: string;
+  resume_url: string;
+};
 
 export function ProfilePage() {
   const qc = useQueryClient(); const toast = useToast();
@@ -15,7 +27,20 @@ export function ProfilePage() {
   const form = useForm<Values>({ resolver: zodResolver(profileSchema) });
   const p = query.data;
   useEffect(() => {
-    if (p) form.reset({ full_name: p.full_name, register_number: p.register_number ?? "", department: p.department ?? "", year_of_study: p.year_of_study ? String(p.year_of_study) : "", avatar_url: p.avatar_url ?? "", bio: p.bio ?? "", github_url: p.github_url ?? "", linkedin_url: p.linkedin_url ?? "", resume_url: p.resume_url ?? "" });
+    if (p) {
+      form.reset({
+        full_name: p.full_name,
+        register_number: p.register_number ?? "",
+        department: p.department ?? "",
+        department_id: p.department_id ?? "",
+        year_of_study: p.year_of_study ? String(p.year_of_study) : "",
+        avatar_url: p.avatar_url ?? "",
+        bio: p.bio ?? "",
+        github_url: p.github_url ?? "",
+        linkedin_url: p.linkedin_url ?? "",
+        resume_url: p.resume_url ?? "",
+      });
+    }
   }, [p, form]);
 
   const save = useMutation({
@@ -43,7 +68,16 @@ export function ProfilePage() {
                 <TextField label="Register number" readOnly={!!prof.register_number} hint={prof.register_number ? "Only an administrator can change this." : undefined} error={e.register_number} {...form.register("register_number")} />
                 <SelectField label="Year of study" placeholder="Select" choices={[1, 2, 3, 4, 5, 6].map((y) => ({ value: String(y), label: `Year ${y}` }))} error={e.year_of_study} {...form.register("year_of_study")} />
               </div>
-              <TextField label="Department" error={e.department} {...form.register("department")} />
+              <DepartmentSelector
+                label="Department / Programme"
+                value={form.watch("department_id") || form.watch("department")}
+                onChange={(id, name) => {
+                  form.setValue("department_id", id, { shouldDirty: true });
+                  form.setValue("department", name, { shouldDirty: true });
+                }}
+                error={e.department?.message || (e as Record<string, { message?: string }>).department_id?.message}
+                hint="Select your official SSMIET engineering department"
+              />
               <TextAreaField label="Short biography" rows={4} hint="Up to 600 characters." error={e.bio} {...form.register("bio")} />
               <TextField label="Profile photo link" type="url" placeholder="https://" error={e.avatar_url} {...form.register("avatar_url")} />
               <TextField label="GitHub profile" type="url" placeholder="https://github.com/you" error={e.github_url} {...form.register("github_url")} />

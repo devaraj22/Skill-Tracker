@@ -11,20 +11,31 @@ import { loginSchema, nullify, registerSchema } from "@/schemas";
 
 function AuthFrame({ title, subtitle, children, footer }: { title: string; subtitle: string; children: ReactNode; footer: ReactNode }) {
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-10">
+    <main className="flex min-h-screen items-center justify-center bg-slate-50/60 px-4 py-10">
       <div className="w-full max-w-md">
-        <p className="mb-6 text-center text-2xl font-semibold text-brand-700">SkillTrack</p>
-        <Card className="p-6">
-          <h1 className="text-xl font-semibold">{title}</h1>
-          <p className="mb-5 mt-1 text-sm text-ink-soft">{subtitle}</p>
+        <div className="mb-6 flex flex-col items-center justify-center text-center">
+          <div className="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center font-black tracking-tight text-sm shadow-xs mb-2">
+            SSM
+          </div>
+          <p className="text-xl font-bold text-slate-900 tracking-tight">
+            <span className="text-red-600">SSM</span> <span className="text-navy-900">SkillTrack</span>
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-amber-500 ml-1 align-middle" />
+          </p>
+          <p className="text-xs text-slate-500 mt-0.5">
+            (An Autonomous Institution) · Palani Highway, Dindigul
+          </p>
+        </div>
+        <Card className="p-6 border border-slate-200/90 shadow-sm">
+          <h1 className="text-xl font-semibold text-slate-900">{title}</h1>
+          <p className="mb-5 mt-1 text-sm text-slate-600">{subtitle}</p>
           {children}
         </Card>
-        <p className="mt-4 text-center text-sm text-ink-soft">{footer}</p>
+        <p className="mt-4 text-center text-sm text-slate-600">{footer}</p>
       </div>
     </main>
   );
 }
-const home = (role: string) => (role === "admin" ? "/admin" : "/");
+const home = (role: string) => (role === "admin" ? "/admin" : "/dashboard");
 
 export function LoginPage() {
   const { user, login } = useAuth();
