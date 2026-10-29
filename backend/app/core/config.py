@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://skilltrack:change-me@localhost:5432/skilltrack"
     secret_key: str = ""
     access_token_minutes: int = 60
-    cors_origins: str = "http://localhost:5173"
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
     upload_dir: Path = BACKEND_DIR / "private_uploads"
     max_upload_bytes: int = 5 * 1024 * 1024
     cookie_samesite: str = "lax"  # lax | strict | none (none requires HTTPS)

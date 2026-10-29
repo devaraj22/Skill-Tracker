@@ -1,4 +1,4 @@
-# Student Skill and Certification Management System
+# Student Credential & Competency Platform
 
 A full-stack institutional platform where **students** track skills, certificates, projects, achievements, learning goals, and placement-preparation results, and publish an optional public portfolio, and **college administrators** manage accounts, verify certificates, and view aggregate institutional analytics.
 

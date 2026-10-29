@@ -29,7 +29,7 @@ export function DashboardPage() {
     <DataState query={query} skeleton={<Loading />}>
       {(d) => (
         <>
-          <PageHeader title={`Welcome, ${d.full_name.split(" ")[0]}`} description="SSMIET Student Skill and Certification Management Portal." />
+          <PageHeader title={`Welcome, ${d.full_name.split(" ")[0]}`} description="SSMIET Student Credential & Competency Platform." />
           
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-xs">
             <div className="flex items-center gap-3">

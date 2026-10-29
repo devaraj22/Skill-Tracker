@@ -15,14 +15,9 @@ function AuthFrame({ title, subtitle, children, footer }: { title: string; subti
     <main className="flex min-h-screen items-center justify-center bg-[#FCFBF7] px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center justify-center text-center">
-          <Link to="/" className="hover:opacity-95 transition-opacity inline-block mb-3">
+          <Link to="/" className="hover:opacity-95 transition-opacity inline-block">
             <SSMLogo variant="auth" />
-
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#0B2A63] text-white text-xs font-bold tracking-wide uppercase shadow-xs border-r-3 border-[#F59E0B]">
-            <span>SkillTrack Platform</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
-          </div>
         </div>
         <Card className="p-6 border border-[#0B2A63]/15 bg-white shadow-md rounded-xl">
           <h1 className="text-xl font-bold text-[#0B2A63] tracking-tight">{title}</h1>
@@ -34,7 +29,7 @@ function AuthFrame({ title, subtitle, children, footer }: { title: string; subti
     </main>
   );
 }
-const home = (role: string) => (role === "admin" ? "/admin" : "/");
+const home = (role: string) => (role === "student" ? "/dashboard" : "/admin");
 
 export function LoginPage() {
   const { user, login } = useAuth();
@@ -78,7 +73,7 @@ export function RegisterPage() {
     if (body.year_of_study) body.year_of_study = Number(body.year_of_study);
     try {
       await signUp(body);
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);

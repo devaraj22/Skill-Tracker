@@ -9,7 +9,6 @@ import {
   ChevronRight,
   Compass,
   ExternalLink,
-  GraduationCap,
   Layers,
   LayoutDashboard,
   LogIn,
@@ -20,7 +19,6 @@ import {
   X,
   AlertCircle,
   Loader2,
-  Building2,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { api } from "@/lib/api";
@@ -129,13 +127,16 @@ export function LandingPage() {
       {/* ── 2. STICKY TOP NAV BAR ────────────────────────────────────────────── */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#0B2A63]/15 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between gap-4">
-          {/* Brand Logo in Navbar */}
-          <Link to="/" className="flex items-center gap-2 shrink-0 hover:opacity-90 transition-opacity">
-            <SSMLogo variant="navbar" />
-          </Link>
+          {/* Platform Brand Anchor */}
+          <div className="flex items-center gap-2.5 shrink-0">
+            <div className="h-5 w-1 bg-[#0B2A63] rounded-full" />
+            <span className="text-sm font-black text-[#0B2A63] tracking-tight whitespace-nowrap">
+              Credential &amp; Competency Platform
+            </span>
+          </div>
 
           {/* Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1.5 text-sm font-semibold text-[#0B2A63]">
+          <nav className="hidden lg:flex items-center gap-1 text-sm font-semibold text-[#0B2A63]">
             <a
               href="#courses"
               className="px-3 py-1.5 rounded-md hover:text-[#D32F2F] hover:bg-[#F0F4FA] transition-colors whitespace-nowrap"
@@ -201,7 +202,7 @@ export function LandingPage() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg text-[#0B2A63] hover:bg-slate-100"
+            className="lg:hidden ml-auto p-2 rounded-lg text-[#0B2A63] hover:bg-slate-100"
             aria-label="Toggle Navigation Menu"
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -278,200 +279,294 @@ export function LandingPage() {
         )}
       </header>
 
-      {/* ── 3. HERO SECTION (FEATURING POSTER COURSES & CAMPUS ARCHITECTURE) ─── */}
-      <section id="courses" className="py-12 sm:py-16 border-b border-[#0B2A63]/15 bg-gradient-to-b from-[#FCFBF7] via-white to-[#F0F4FA]/50">
+      {/* ── 3. HERO SECTION ─────────────────────────────────────────────────── */}
+      <section className="py-12 sm:py-16 border-b border-[#0B2A63]/15 bg-gradient-to-b from-[#FCFBF7] via-white to-[#F0F4FA]/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-8 items-start">
-            {/* Left Content: Poster Course Matrix */}
+          <div className="grid lg:grid-cols-12 gap-10 items-center">
+            {/* Left Content: Value Proposition, Identity & Quick Stats */}
             <div className="lg:col-span-7 space-y-6">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#0B2A63] text-white text-xs font-bold shadow-xs border-r-4 border-[#F59E0B]">
-                <GraduationCap className="h-4 w-4 text-[#FBBF24]" />
-                <span>SSM INSTITUTE OF ENGINEERING AND TECHNOLOGY · (An Autonomous Institution)</span>
-              </div>
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0B2A63]/5 text-[#0B2A63] text-xs font-bold border border-[#0B2A63]/15">
+                  <ShieldCheck className="h-3.5 w-3.5 text-[#0B2A63]" />
+                  <span>SSMIET Autonomous Institutional Platform</span>
+                </div>
 
-              {/* Headline */}
-              <div>
-                <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-black tracking-tight text-[#0B2A63] leading-[1.18]">
-                  Student Skill and Certification Management System
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-[#0B2A63] leading-[1.14]">
+                  Student Credential &amp; <br className="hidden sm:inline" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0B2A63] via-[#1E40AF] to-[#D32F2F]">
+                    Competency Platform
+                  </span>
                 </h1>
-                <p className="mt-2 text-sm sm:text-base text-slate-600 max-w-2xl leading-relaxed">
-                  The official skill management and competency evaluation platform for SSMIET. Track curriculum outcomes, verify real certificates under faculty review, and map student proficiency to premier industry placements.
+
+                <p className="text-slate-600 text-sm sm:text-base max-w-2xl leading-relaxed pt-1">
+                  The authoritative skill intelligence and credential verification system for SSM Institute of Engineering and Technology. Map curriculum outcomes, audit industry certifications under faculty governance, and elevate institutional placement readiness.
                 </p>
               </div>
 
-              {/* Exact Poster Courses Grid */}
-              <div className="bg-white border border-[#0B2A63]/20 rounded-2xl p-5 sm:p-6 shadow-md relative overflow-hidden">
-                {/* Poster Gold Ribbon Corner */}
-                <div className="absolute top-0 right-0 w-24 h-2 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24]" />
-
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {/* UG COURSES COLUMN */}
-                  <div className="space-y-3">
-                    <div className="inline-block bg-[#0B2A63] text-white px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase shadow-xs">
-                      UG COURSES
-                    </div>
-                    <ul className="space-y-1.5 text-xs text-slate-800 font-medium">
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.E.</strong> - Civil Engineering</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.E.</strong> - Mechanical Engineering</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.E.</strong> - Electrical and Electronics Engineering</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.E.</strong> - Electronics and Communication Engineering</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.E.</strong> - Computer Science and Engineering</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.E.</strong> - CSE (Cyber Security)</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.Tech.</strong> - Artificial Intelligence and Data Science</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.Tech.</strong> - Computer Science and Business Systems</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                        <span><strong>B.Tech.</strong> - Information Technology</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* PG & Ph.D. COURSES COLUMN */}
-                  <div className="space-y-5 flex flex-col justify-between">
-                    <div className="space-y-3">
-                      <div className="inline-block bg-[#0B2A63] text-white px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase shadow-xs">
-                        PG COURSES
-                      </div>
-                      <ul className="space-y-1.5 text-xs text-slate-800 font-medium">
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                          <span><strong>M.E.</strong> - Communication Systems</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-[#F59E0B] font-bold text-sm leading-none shrink-0 mt-0.5">❖</span>
-                          <span><strong>M.E.</strong> - Thermal Engineering</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="space-y-3 pt-2 border-t border-slate-100">
-                      <div className="inline-block bg-[#0B2A63] text-white px-4 py-1 rounded-full text-xs font-black tracking-wider uppercase shadow-xs">
-                        Ph.D. PROGRAMMES
-                      </div>
-                      <p className="text-xs text-slate-600 leading-relaxed">
-                        Approved Research Centres for Doctoral Degrees under Anna University, Chennai.
-                      </p>
-                    </div>
-
-                    {/* Palani Highway Location Tag */}
-                    <div className="p-3 bg-[#FCFBF7] rounded-lg border border-[#0B2A63]/15 text-xs text-[#0B2A63]">
-                      <span className="font-bold block">SSMIET Dindigul Campus</span>
-                      <span className="text-slate-600">Palani Highway, Dindigul - 624 002</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Call to Actions */}
+              {/* Primary Call to Action Row */}
               <div className="flex flex-wrap items-center gap-3 pt-1">
                 <Link
                   to={user ? portalRoute : "/register"}
-                  className="inline-flex items-center gap-2 bg-[#0B2A63] hover:bg-[#061838] text-white px-5 py-2.5 rounded-lg font-bold text-sm shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap border-b-2 border-[#F59E0B] group"
+                  className="inline-flex items-center gap-2 bg-[#0B2A63] hover:bg-[#061838] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 whitespace-nowrap border-b-2 border-[#F59E0B] group"
                 >
-                  <span>{user ? `Go to ${portalLabel}` : "Explore Student Portal"}</span>
+                  <span>{user ? `Go to ${portalLabel}` : "Access Student Portal"}</span>
                   <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
 
                 <a
-                  href="#departments"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-bold text-sm text-[#0B2A63] hover:text-[#D32F2F] bg-white hover:bg-[#F0F4FA] border border-[#0B2A63]/30 transition-all duration-200 whitespace-nowrap group"
+                  href="#verification"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-sm text-[#0B2A63] hover:text-[#D32F2F] bg-white hover:bg-[#F0F4FA] border border-[#0B2A63]/25 transition-all duration-200 whitespace-nowrap shadow-xs"
                 >
-                  <BookOpen className="h-4 w-4 text-[#0B2A63] group-hover:scale-110 transition-transform duration-200" />
-                  <span>View All 10 Disciplines</span>
+                  <ShieldCheck className="h-4 w-4 text-[#0B2A63]" />
+                  <span>Verify Certificate</span>
                 </a>
+
+                <a
+                  href="#courses"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl font-semibold text-xs text-slate-600 hover:text-[#0B2A63] transition-colors"
+                >
+                  <BookOpen className="h-3.5 w-3.5" />
+                  <span>Explore 10 Disciplines</span>
+                </a>
+              </div>
+
+              {/* Institutional Metrics Strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3">
+                <div className="p-3 bg-white rounded-xl border border-slate-200/80 shadow-xs">
+                  <div className="text-xl font-black text-[#0B2A63]">10</div>
+                  <div className="text-[11px] font-semibold text-slate-500 uppercase">Disciplines</div>
+                </div>
+                <div className="p-3 bg-white rounded-xl border border-slate-200/80 shadow-xs">
+                  <div className="text-xl font-black text-[#15803D]">100%</div>
+                  <div className="text-[11px] font-semibold text-slate-500 uppercase">Faculty Audited</div>
+                </div>
+                <div className="p-3 bg-white rounded-xl border border-slate-200/80 shadow-xs">
+                  <div className="text-xl font-black text-[#0B2A63]">Anna Univ</div>
+                  <div className="text-[11px] font-semibold text-slate-500 uppercase">Curriculum Matrix</div>
+                </div>
+                <div className="p-3 bg-white rounded-xl border border-slate-200/80 shadow-xs">
+                  <div className="text-xl font-black text-[#D32F2F]">Placement</div>
+                  <div className="text-[11px] font-semibold text-slate-500 uppercase">Readiness Index</div>
+                </div>
               </div>
             </div>
 
-            {/* Right Content: Modern SSMIET Campus Visual Frame */}
+            {/* Right Content: Live Institutional Credential & Competency Spotlight Card */}
             <div className="lg:col-span-5">
-              <div className="bg-white border-2 border-[#0B2A63]/20 rounded-2xl shadow-lift overflow-hidden">
-                {/* Visual Header Banner */}
-                <div className="bg-gradient-to-r from-[#061838] via-[#0B2A63] to-[#0D357A] p-4 text-white flex items-center justify-between border-b-2 border-[#F59E0B]">
-                  <div className="flex items-center gap-2.5">
-                    <Building2 className="h-5 w-5 text-[#FBBF24]" />
-                    <span className="font-black text-sm tracking-wide">SSMIET ACADEMIC CAMPUS</span>
+              <div className="bg-white border border-slate-200/90 rounded-2xl shadow-xl overflow-hidden ring-1 ring-slate-900/5">
+                {/* Spotlight Header */}
+                <div className="bg-gradient-to-r from-[#061838] via-[#0B2A63] to-[#0D357A] px-5 py-3.5 text-white flex items-center justify-between border-b-2 border-[#F59E0B]">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="font-bold text-xs tracking-wider uppercase">Live Platform Verification Preview</span>
                   </div>
-                  <span
-                    className="text-[#FBBF24] text-xs font-serif italic"
-                    style={{ fontFamily: "Georgia, serif" }}
-                  >
-                    Infinite Possibilities
+                  <span className="text-[10px] font-semibold bg-white/10 px-2 py-0.5 rounded text-white/90">
+                    SSMIET Tamper-Evident
                   </span>
                 </div>
 
-                {/* Campus Facade Illustration / Representative Card */}
-                <div className="p-6 bg-gradient-to-b from-[#FCFBF7] to-white space-y-4">
-                  <div className="relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100 p-6 text-center">
-                    <div className="w-16 h-16 mx-auto rounded-full bg-[#0B2A63] text-white flex items-center justify-center font-black text-2xl shadow-md mb-3 border-2 border-[#FBBF24]">
-                      SSM
+                {/* Simulated Student Credential Audit Card */}
+                <div className="p-5 space-y-4 bg-gradient-to-b from-[#FCFBF7] to-white">
+                  {/* Verified Student Header */}
+                  <div className="flex items-center justify-between gap-3 p-3 bg-white rounded-xl border border-slate-200/80 shadow-xs">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-[#0B2A63] text-white flex items-center justify-center font-bold text-sm">
+                        SK
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-900">S. Kaviya Priya</div>
+                        <div className="text-[11px] text-slate-500">B.Tech AI &amp; DS · Year IV · Reg: 922121104042</div>
+                      </div>
                     </div>
-                    <h3 className="font-extrabold text-[#0B2A63] text-base">
-                      SSM Institute of Engineering and Technology
-                    </h3>
-                    <p className="text-xs text-[#D32F2F] font-bold mt-0.5">
-                      (An Autonomous Institution)
-                    </p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Palani Highway, Dindigul - 624 002
-                    </p>
-                    <div className="mt-3 pt-3 border-t border-slate-200/80 text-[11px] font-semibold text-slate-700">
-                      Approved by AICTE • Affiliated to Anna University • Accredited by NAAC &amp; NBA
-                    </div>
+                    <span className="px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 font-extrabold text-[10px] border border-emerald-200">
+                      Tier-1 Ready
+                    </span>
                   </div>
 
-                  {/* Student Placement Readiness Stats Card */}
-                  <div className="space-y-3 pt-2">
-                    <div className="flex items-center justify-between text-xs pb-1.5 border-b border-slate-100">
-                      <span className="font-bold text-[#0B2A63]">Skill Intelligence Highlights</span>
-                      <span className="text-xs font-extrabold text-[#15803D] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                        Anna Univ. Matrix
+                  {/* Verified Credential Item */}
+                  <div className="p-3.5 bg-white rounded-xl border border-[#0B2A63]/15 shadow-xs space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <span className="text-[10px] font-bold text-[#D32F2F] uppercase tracking-wider block">Audited Certificate</span>
+                        <h4 className="text-xs font-bold text-[#0B2A63]">AWS Certified Machine Learning – Specialty</h4>
+                        <span className="text-[11px] text-slate-500">Issued by Amazon Web Services • Audited &amp; Verified</span>
+                      </div>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 shrink-0">
+                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                        Verified
                       </span>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-2.5">
-                      <div className="p-3 rounded-lg bg-[#FCFBF7] border border-[#0B2A63]/15 text-left">
-                        <span className="text-[10px] uppercase font-bold text-slate-500 block">Engineering Branches</span>
-                        <span className="text-lg font-black text-[#0B2A63]">10 Disciplines</span>
-                        <span className="text-[11px] text-[#D32F2F] font-semibold block mt-0.5">SOC &amp; Non-SOC</span>
-                      </div>
-                      <div className="p-3 rounded-lg bg-[#FCFBF7] border border-[#0B2A63]/15 text-left">
-                        <span className="text-[10px] uppercase font-bold text-slate-500 block">Accreditation</span>
-                        <span className="text-lg font-black text-[#0B2A63]">NAAC &amp; NBA</span>
-                        <span className="text-[11px] text-[#F59E0B] font-semibold block mt-0.5">Autonomous Tier</span>
-                      </div>
-                    </div>
-
-                    <div className="p-2.5 rounded-lg bg-[#F0F4FA] border border-[#0B2A63]/15 text-xs text-[#0B2A63] flex items-center gap-2">
-                      <ShieldCheck className="h-4 w-4 text-[#D32F2F] shrink-0" />
-                      <span>Tamper-evident Certificate Verification &amp; Audit Logs</span>
+                    <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100 font-mono">
+                      <span>ID: SSM-2026-CERT-8842</span>
+                      <span className="text-slate-500">Faculty Review: Dr. R. Senthil Kumar (HOD)</span>
                     </div>
                   </div>
+
+                  {/* Competency Mastery Progress Meters */}
+                  <div className="p-3.5 bg-white rounded-xl border border-slate-200/80 shadow-xs space-y-2.5">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#0B2A63]">
+                      <span>Department Core Competencies</span>
+                      <span className="text-[10px] text-slate-500 font-normal">Anna Univ. Matrix</span>
+                    </div>
+
+                    <div className="space-y-2 text-xs">
+                      <div>
+                        <div className="flex justify-between text-[11px] font-semibold text-slate-700 mb-1">
+                          <span>Machine Learning &amp; Deep Learning</span>
+                          <span className="text-emerald-700 font-bold">94%</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[#0B2A63] to-emerald-600 rounded-full" style={{ width: "94%" }} />
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex justify-between text-[11px] font-semibold text-slate-700 mb-1">
+                          <span>Data Structures &amp; Algorithms</span>
+                          <span className="text-emerald-700 font-bold">88%</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[#0B2A63] to-[#F59E0B] rounded-full" style={{ width: "88%" }} />
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="flex justify-between text-[11px] font-semibold text-slate-700 mb-1">
+                          <span>Cloud &amp; DevOps Engineering</span>
+                          <span className="text-emerald-700 font-bold">82%</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-full bg-gradient-to-r from-[#0B2A63] to-[#D32F2F] rounded-full" style={{ width: "82%" }} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Verification Lookup Link */}
+                  <a
+                    href="#verification"
+                    className="block text-center py-2 px-3 rounded-lg bg-[#0B2A63]/5 hover:bg-[#0B2A63]/10 border border-[#0B2A63]/15 text-[#0B2A63] text-xs font-bold transition-colors"
+                  >
+                    Audited with Tamper-Evident SHA-256 Verification →
+                  </a>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ACADEMIC PROGRAMMES & CURRICULUM CATALOG ───────────────────────── */}
+      <section id="courses" className="py-14 bg-white border-b border-[#0B2A63]/15">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <span className="text-xs font-black uppercase tracking-wider text-[#0B2A63] bg-white border border-[#0B2A63]/20 px-3.5 py-1 rounded-full shadow-2xs">
+              Academic Catalog 2026 – 2027
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[#0B2A63] mt-2.5">
+              Undergraduate &amp; Postgraduate Programmes
+            </h2>
+            <p className="text-slate-600 mt-1.5 text-sm sm:text-base">
+              Approved by AICTE, New Delhi • Affiliated to Anna University, Chennai • Accredited by NAAC &amp; NBA
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Computing / SOC */}
+            <div className="bg-[#FCFBF7] border border-[#0B2A63]/20 rounded-2xl p-6 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div>
+                <div className="inline-block bg-[#0B2A63] text-white px-3.5 py-1 rounded-full text-xs font-black tracking-wider uppercase mb-4 shadow-xs">
+                  Computing &amp; Emerging Tech (SOC)
+                </div>
+                <ul className="space-y-2.5 text-xs text-slate-800 font-medium">
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.E.</strong> Computer Science &amp; Engineering</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.E.</strong> CSE (Cyber Security)</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.Tech.</strong> Artificial Intelligence &amp; Data Science</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.Tech.</strong> CS &amp; Business Systems</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.Tech.</strong> Information Technology</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="pt-4 mt-4 border-t border-slate-200 text-[11px] text-slate-500">
+                School of Computing · Specialised Competency Frameworks
+              </div>
+            </div>
+
+            {/* Core Engineering */}
+            <div className="bg-[#FCFBF7] border border-[#0B2A63]/20 rounded-2xl p-6 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div>
+                <div className="inline-block bg-[#0B2A63] text-white px-3.5 py-1 rounded-full text-xs font-black tracking-wider uppercase mb-4 shadow-xs">
+                  Core Engineering Disciplines
+                </div>
+                <ul className="space-y-2.5 text-xs text-slate-800 font-medium">
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.E.</strong> Electronics &amp; Communication Engg</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.E.</strong> Electrical &amp; Electronics Engg</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.E.</strong> Mechanical Engineering</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                  <li className="flex items-center justify-between p-2 rounded-lg bg-white border border-slate-200/80">
+                    <span><strong>B.E.</strong> Civil Engineering</span>
+                    <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">4 Yrs</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="pt-4 mt-4 border-t border-slate-200 text-[11px] text-slate-500">
+                Engineering &amp; Technology · Core Industry Laboratories
+              </div>
+            </div>
+
+            {/* Postgraduate & Research */}
+            <div className="bg-[#FCFBF7] border border-[#0B2A63]/20 rounded-2xl p-6 shadow-xs flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div>
+                <div className="inline-block bg-[#0B2A63] text-white px-3.5 py-1 rounded-full text-xs font-black tracking-wider uppercase mb-4 shadow-xs">
+                  PG &amp; Ph.D. Research Centres
+                </div>
+                <div className="space-y-4 text-xs">
+                  <div className="space-y-2">
+                    <span className="text-[11px] font-bold text-[#D32F2F] uppercase tracking-wider block">Postgraduate Degrees</span>
+                    <ul className="space-y-2 text-slate-800 font-medium">
+                      <li className="p-2 rounded-lg bg-white border border-slate-200/80 flex justify-between">
+                        <span><strong>M.E.</strong> Communication Systems</span>
+                        <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">2 Yrs</span>
+                      </li>
+                      <li className="p-2 rounded-lg bg-white border border-slate-200/80 flex justify-between">
+                        <span><strong>M.E.</strong> Thermal Engineering</span>
+                        <span className="text-[10px] font-bold text-[#0B2A63] bg-slate-100 px-1.5 py-0.5 rounded">2 Yrs</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-200/80">
+                    <span className="text-[11px] font-bold text-[#0B2A63] uppercase tracking-wider block mb-1">Ph.D. Doctoral Centres</span>
+                    <p className="text-[11px] text-slate-600 leading-relaxed bg-white p-2.5 rounded-lg border border-slate-200/80">
+                      Approved Research Centres for Doctoral Degrees under Anna University, Chennai.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="pt-4 mt-4 border-t border-slate-200 text-[11px] text-slate-500">
+                Palani Highway, Dindigul – 624 002
               </div>
             </div>
           </div>
@@ -819,7 +914,7 @@ export function LandingPage() {
               </div>
             </div>
             <p className="text-slate-300 leading-relaxed text-xs">
-              Student Skill and Certification Management System for SSM Institute of Engineering and Technology.
+              Student Credential & Competency Platform for SSM Institute of Engineering and Technology.
             </p>
           </div>
 

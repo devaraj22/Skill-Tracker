@@ -1,6 +1,6 @@
-# Student Skill and Certification Management System: Complete Documentation
+# Student Credential & Competency Platform: Complete Documentation
 
-> **Student Skill and Certification Management System** (SkillTrack) is an enterprise-grade platform designed for higher education institutions. It bridges the gap between student career development and institutional oversight through self-reported skill tracking, verified credentials, placement analytics, and public portfolios.
+> **Student Credential & Competency Platform** (SkillTrack) is an enterprise-grade platform designed for higher education institutions. It bridges the gap between student career development and institutional oversight through self-reported skill tracking, verified credentials, placement analytics, and public portfolios.
 
 ---
 
@@ -532,4 +532,4 @@ python scripts/capture_all_screenshots.py
 
 ---
 
-*Student Skill and Certification Management System (SkillTrack).*
+*Student Credential & Competency Platform (SkillTrack).*
